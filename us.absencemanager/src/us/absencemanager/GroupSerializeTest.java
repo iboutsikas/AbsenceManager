@@ -13,7 +13,7 @@ public class GroupSerializeTest {
 		s1.addAbsence("CCP1600", new Absence("CCP1600","MP Room"));
 		
 		
-		StudentGroup2 sg = new StudentGroup2("MyTestGroup");
+		StudentGroup sg = new StudentGroup("MyTestGroup");
 		sg.addStudent(s1);
 		sg.addStudent(s2);
 		

@@ -4,6 +4,7 @@
 package us.absencemanager;
 
 /**
+ * Represents a unit with a specific ID, name, and the maximum allowed absences
  * @author Ioannis Boutsikas
  *
  */
@@ -14,9 +15,10 @@ public class Unit {
 	
 	
 	/**
-	 * @param id
-	 * @param name
-	 * @param maxAbsences
+	 * Constructs and initializes a Unit with given ID, name, and maxAbsences.
+	 * @param id The Unit id
+	 * @param name The Unit name
+	 * @param maxAbsences The maximum allowed absences
 	 */
 	public Unit(String id, String name, int maxAbsences) {
 		this.id = id;

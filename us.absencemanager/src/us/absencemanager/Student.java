@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
+ * Student represents a Student with specific ID, name, email and a collection of Absences.
  * @author Ioannis Boutsikas
  *
  */
@@ -23,6 +24,11 @@ public class Student implements Serializable{
 	private String email;
 	private Map<String, ArrayList<Absence>> absences;
 	
+	/**
+	 * Adds a specific absence for the unit (specified by id) to the collection
+	 * @param unitID The unit ID
+	 * @param a The specific absence
+	 */
 	public void addAbsence(String unitID, Absence a) {
 		try {
 			ArrayList<Absence> temp = absences.get(unitID);
@@ -63,10 +69,11 @@ public class Student implements Serializable{
 	}	
 	
 	/**
-	 * @param id
-	 * @param firstName
-	 * @param lastName
-	 * @param email
+	 * Constructs and initializes a Student with given ID, first name, last name, and email.
+	 * @param id The ID
+	 * @param firstName The first name
+	 * @param lastName The last name
+	 * @param email The email
 	 */
 	public Student(String id, String firstName, String lastName, String email) {
 		this.id = id;

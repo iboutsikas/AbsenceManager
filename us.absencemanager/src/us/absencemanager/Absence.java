@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package us.absencemanager;
 
 import java.io.Serializable;
@@ -10,8 +8,8 @@ import java.util.Date;
 import org.apache.commons.lang3.time.DateUtils;
 
 /**
+ * The Absence class, represents a specific Absence, with unit ID, classroom, and date.
  * @author Zinadore
- *
  */
 
 public class Absence implements Serializable {	
@@ -23,6 +21,11 @@ public class Absence implements Serializable {
 	private Date date;
 	private String classroom;
 	
+	/**
+	 * Constructs and initializes a new Absence with unitID and the classroom. Date is set to the closest rounded down hour.
+	 * @param unitID The unit id for the absence.
+	 * @param classroom The classroom the absence was taken in
+	 */
 	public Absence (String unitID, String classroom) {
 		setUnitID(unitID);
 		setClassroom(classroom);
