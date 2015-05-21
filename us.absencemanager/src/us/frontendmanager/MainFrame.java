@@ -1,7 +1,10 @@
 package us.frontendmanager;
+import us.absencemanager.*;
 
 import javax.swing.*;
+
 import java.awt.*;
+import java.util.ArrayList;
 
 public class MainFrame extends JFrame {
 	/**
@@ -27,7 +30,7 @@ public class MainFrame extends JFrame {
 		
 	}
 	
-	private void populateDropDown(){
+	private void populateDropDown(ArrayList<StudentGroup2> students){
 		//TODO fetch StudentGroup name <String>
 	}
 }
