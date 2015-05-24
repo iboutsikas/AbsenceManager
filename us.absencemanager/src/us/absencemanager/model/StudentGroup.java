@@ -1,11 +1,14 @@
 /**
  * 
  */
-package us.absencemanager;
+package us.absencemanager.model;
 
 import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
+
+import us.absencemanager.exceptions.AlreadyExistsException;
 /**
  * A proxy class to be serialized in place of a StudentGroup object.
  * @author Ioannis Boutsikas
@@ -15,9 +18,11 @@ class StudentGroupProxy implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 2137714849076341078L;
-	Manager m = Manager.getInstance();
+	DataLayer dl = DataLayer.getInstance();
 	private String name;
 	private ArrayList<String> studentIDs;
+	private int maxID;
+	private int id;
 	
 	/**
 	 * Creates a proxy object from a StudentGroup object.
@@ -25,7 +30,8 @@ class StudentGroupProxy implements Serializable {
 	 */
 	public StudentGroupProxy(StudentGroup o) {
 		this.name = o.getName();
-		ArrayList<Student> temp = o.getStudentList();
+		this.id = o.getID();
+		ArrayList<Student> temp = o.getStudents();
 		
 		for(Student s: temp){
 			studentIDs.add(s.getId());
@@ -36,10 +42,13 @@ class StudentGroupProxy implements Serializable {
 	 * Creates a StudentGroup object from a serialized StudentGroupProxy object.
 	 * @return A StudentGroup object
 	 * @throws ObjectStreamException
+	 * @throws AlreadyExistsException 
 	 */
-	private Object readResolve() throws ObjectStreamException {
+	private Object readResolve() throws ObjectStreamException, AlreadyExistsException {
+		StudentGroup.initID(maxID);
 		StudentGroup result = new StudentGroup(name);
-		ArrayList<Student> temp = m.getStudents();
+		result.setID(this.id);
+		LinkedHashSet<Student> temp = dl.getStudents();
 		for (String s: studentIDs){
 			for(Student stud: temp){
 				if(stud.getId().equals(s)) {
@@ -61,17 +70,24 @@ public class StudentGroup implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 3436520038042407800L;
+	private static int maxID = 0;
 	private String name;
 	private ArrayList<Student> students;
-	
+	private int id;	
+	protected static void initID(int id) {
+		maxID = id;
+	}
 	/**
-	 * COnstructs and initializes a StudentGroup with given name 
+	 * Constructs and initializes a StudentGroup with given name 
 	 * @param name The name of the group
 	 */
 	public StudentGroup(String name) {
 		setName(name);
 		students = new ArrayList<Student>();
+		maxID++;
+		this.id = maxID;
 	}
+	
 	/**
 	 * Serializes the object through a proxy, instead of directly.
 	 * @return A StudentGroupProxy object.
@@ -85,11 +101,15 @@ public class StudentGroup implements Serializable {
 	/**
 	 * Adds a Student to the Student collection
 	 * @param s The Student to add
+	 * @throws AlreadyExistsException Student is already in the group
 	 */
-	public void addStudent(Student s) {
-		if(s != null) {
+	public void addStudent(Student s) throws AlreadyExistsException {
+		if (!students.contains(s)) {
 			students.add(s);
+		} else {
+			throw new AlreadyExistsException("Student with id: " + s.getId() + " already exists in this group");
 		}
+		
 	}
 	/**
 	 * Retrieves a Student by id, from the collection
@@ -108,8 +128,22 @@ public class StudentGroup implements Serializable {
 	 * 
 	 * @return The collection of Students
 	 */
-	public ArrayList<Student> getStudentList() {
+	public ArrayList<Student> getStudents() {
 		return this.students;
+	}
+	
+	/**
+	 * @return the id
+	 */
+	public int getID() {
+		return id;
+	}
+	
+	/**
+	 * @param name the id to set
+	 */
+	public void setID(int id) {
+		this.id = id;
 	}
 	
 	/**
@@ -128,13 +162,14 @@ public class StudentGroup implements Serializable {
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result
-				+ ((students == null) ? 0 : students.hashCode());
+		result = prime * result + id;
 		return result;
 	}
 	/* (non-Javadoc)
@@ -149,17 +184,20 @@ public class StudentGroup implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		StudentGroup other = (StudentGroup) obj;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (students == null) {
-			if (other.students != null)
-				return false;
-		} else if (!students.equals(other.students))
+		if (id != other.id)
 			return false;
 		return true;
+	}
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		String str = "StudentGroup [name=" + name + ", id=" + id + "]\n";
+				for(Student s: students) {
+					str+="\t"+s.getId()+"\n";
+				}
+		return str;	
 	}
 	
 }
