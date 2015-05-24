@@ -1,7 +1,7 @@
 /**
  * 
  */
-package us.absencemanager;
+package us.absencemanager.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -24,6 +24,21 @@ public class Student implements Serializable{
 	private String email;
 	private Map<String, ArrayList<Absence>> absences;
 	
+	/**
+	 * Constructs and initializes a Student with given ID, first name, last name, and email.
+	 * @param id The ID
+	 * @param firstName The first name
+	 * @param lastName The last name
+	 * @param email The email
+	 */
+	public Student(String id, String firstName, String lastName, String email) {
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		absences = new TreeMap<String, ArrayList<Absence>>();
+	}
+
 	/**
 	 * Adds a specific absence for the unit (specified by id) to the collection
 	 * @param unitID The unit ID
@@ -67,33 +82,11 @@ public class Student implements Serializable{
 		ArrayList<Absence> temp = this.absences.get(id);	
 		return temp;
 	}	
-	
 	/**
-	 * Constructs and initializes a Student with given ID, first name, last name, and email.
-	 * @param id The ID
-	 * @param firstName The first name
-	 * @param lastName The last name
-	 * @param email The email
-	 */
-	public Student(String id, String firstName, String lastName, String email) {
-		this.id = id;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		absences = new TreeMap<String, ArrayList<Absence>>();
-	}
-
-	/**
-	 * @return the id
+	 * @return the regNumber
 	 */
 	public String getId() {
 		return id;
-	}
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(String id) {
-		this.id = id;
 	}
 	/**
 	 * @return the firstName
@@ -139,6 +132,37 @@ public class Student implements Serializable{
 	public String toString() {
 		return "Student [id=" + id + ", firstName=" + firstName + ", lastName="
 				+ lastName + ", email=" + email + "]";
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Student other = (Student) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 	
 }
