@@ -18,7 +18,7 @@ class StudentGroupProxy implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 2137714849076341078L;
-	DataLayer dl = DataLayer.getInstance();
+	transient DataLayer dl;
 	private String name;
 	private ArrayList<String> studentIDs;
 	private int maxID;
@@ -29,12 +29,13 @@ class StudentGroupProxy implements Serializable {
 	 * @param o The StudentGroup object to be converted.
 	 */
 	public StudentGroupProxy(StudentGroup o) {
+		dl = DataLayer.getInstance();
 		this.name = o.getName();
 		this.id = o.getID();
-		ArrayList<Student> temp = o.getStudents();
-		
+		this.studentIDs = new ArrayList<String>();
+		ArrayList<Student> temp = o.getStudents();		
 		for(Student s: temp){
-			studentIDs.add(s.getId());
+				studentIDs.add(s.getId());
 		}
 	}
 	
@@ -45,14 +46,15 @@ class StudentGroupProxy implements Serializable {
 	 * @throws AlreadyExistsException 
 	 */
 	private Object readResolve() throws ObjectStreamException, AlreadyExistsException {
+		dl = DataLayer.getInstance();
 		StudentGroup.initID(maxID);
 		StudentGroup result = new StudentGroup(name);
 		result.setID(this.id);
 		LinkedHashSet<Student> temp = dl.getStudents();
-		for (String s: studentIDs){
-			for(Student stud: temp){
-				if(stud.getId().equals(s)) {
-					result.addStudent(stud);
+		for (String s: studentIDs) {
+			for(Student st: temp) {
+				if(st.getId().equals(s)) {
+					result.addStudent(st);
 				}
 			}
 		}

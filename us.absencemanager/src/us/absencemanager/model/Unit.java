@@ -3,12 +3,19 @@
  */
 package us.absencemanager.model;
 
+import java.io.Serializable;
+
 /**
  * Represents a unit with a specific ID, name, and the maximum allowed absences
  * @author Ioannis Boutsikas
  *
  */
-public class Unit {
+public class Unit implements Serializable{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 395538694810778557L;
 	private String id;
 	private String name;
 	private int maxAbsences;
@@ -90,5 +97,11 @@ public class Unit {
 			return false;
 		return true;
 	}
-	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Unit [id=" + id + ", name=" + name + "]";
+	}
 }
