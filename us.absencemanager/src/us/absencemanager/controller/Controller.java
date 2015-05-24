@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import us.absencemanager.exceptions.AlreadyExistsException;
 import us.absencemanager.exceptions.NoDataFoundException;
@@ -33,19 +34,20 @@ public class Controller {
 		return instance;
 	}
 	
-	public ArrayList<Student> getStudents() {
+	public List<Student> getStudents() {
 		ArrayList<Student> temp = new ArrayList<Student>(dl.getStudents());		
-		return (ArrayList<Student>) Collections.unmodifiableList(temp);
+		return Collections.unmodifiableList(temp);
 	}
 	
-	public ArrayList<StudentGroup> getStudentGroups() {
+	public List<StudentGroup> getStudentGroups() {
 		ArrayList<StudentGroup> temp = new ArrayList<StudentGroup>(dl.getStudentGroups());		
-		return (ArrayList<StudentGroup>) Collections.unmodifiableList(temp);
+		return Collections.unmodifiableList(temp);
 	}
 	
-	public ArrayList<Unit> getUnits() {
-		ArrayList<Unit> temp = new ArrayList<Unit>(dl.getUnits());		
-		return (ArrayList<Unit>) Collections.unmodifiableList(temp);
+	public List<Unit> getUnits() {
+		ArrayList<Unit> temp = new ArrayList<Unit>(dl.getUnits());	
+		System.out.println(temp);
+		return Collections.unmodifiableList(temp);
 	}
 	
 	public void addStudent(String id, String firstName, String lastName, String email) throws AlreadyExistsException {
@@ -81,7 +83,13 @@ public class Controller {
 	
 	public void saveAll(String filePath) throws IOException {
 		dl.saveStudents(new File(filePath+"students.dat"));
-		dl.saveStudentGroups(new File(filePath+"studentGroup.dat"));
+		dl.saveStudentGroups(new File(filePath+"studentGroups.dat"));
 		dl.saveUnits(new File(filePath+"units.dat"));
+	}
+	
+	public void loadAll() throws IOException, ClassNotFoundException {
+		dl.loadStudents(new File("students.dat"));
+		dl.loadStudentGroups(new File("studentGroups.dat"));
+		dl.loadUnits(new File("units.dat"));
 	}
 }

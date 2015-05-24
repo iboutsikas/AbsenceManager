@@ -83,7 +83,7 @@ public class Student implements Serializable{
 		return temp;
 	}	
 	/**
-	 * @return the regNumber
+	 * @return the Id
 	 */
 	public String getId() {
 		return id;
