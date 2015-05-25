@@ -39,6 +39,9 @@ public class Controller {
 		return Collections.unmodifiableList(temp);
 	}
 	
+	public void updateStudent(String id, String firstName, String lastName, String email) throws NoDataFoundException {
+		dl.updateStudent(new Student(id,firstName, lastName, email));
+	}
 	public List<StudentGroup> getStudentGroups() {
 		ArrayList<StudentGroup> temp = new ArrayList<StudentGroup>(dl.getStudentGroups());		
 		return Collections.unmodifiableList(temp);
@@ -65,16 +68,9 @@ public class Controller {
 	}
 	
 	public void addStudentToGroup(String studentId, int groupId) throws NoDataFoundException, AlreadyExistsException {
-		try {
 			Student s = dl.findStudentById(studentId);
-			StudentGroup sg = dl.findGroupById(groupId);
-			
+			StudentGroup sg = dl.findGroupById(groupId);			
 			sg.addStudent(s);
-		} catch (NoDataFoundException e) {
-			throw e;
-		} catch (AlreadyExistsException e) {
-			throw e;
-		}		
 	}
 	
 	public void addAbsenceToStudent(String studentId, String unitId, String classroom, String date) throws NoDataFoundException {

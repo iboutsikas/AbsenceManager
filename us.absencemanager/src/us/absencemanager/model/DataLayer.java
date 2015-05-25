@@ -96,16 +96,17 @@ public class DataLayer {
 	 * @throws NoDataFoundException
 	 */
 	public void updateStudent(Student s) throws NoDataFoundException {
-		Student toUpdate = students.stream()
+		List<Student> toUpdate = students.stream()
 							.filter(p -> p.getId() == s.getId())
-							.collect(Collectors.toList())
-							.get(0);
-		if (toUpdate != null) {
-			toUpdate.setFirstName(s.getFirstName());
-			toUpdate.setLastName(s.getLastName());
-			toUpdate.setEmail(s.getEmail());
-		} else {
+							.collect(Collectors.toList());
+		if (toUpdate.size() == 1) {
+			toUpdate.get(0).setFirstName(s.getFirstName());
+			toUpdate.get(0).setLastName(s.getLastName());
+			toUpdate.get(0).setEmail(s.getEmail());
+		} else if(toUpdate.size() == 0) {
 			throw new NoDataFoundException("Could not find user with id of: " + s.getId() + " to update");
+		} else {
+			throw new IllegalStateException("There were more than one students with id:" + s.getId() + ".\nSomething is seriously wrong;");
 		}
 	}
 
