@@ -1,4 +1,4 @@
-package us.frontendmanager;
+package us.absencemanager.ui;
 import us.absencemanager.*;
 
 import javax.swing.*;
@@ -30,8 +30,7 @@ public class MainFrame extends JFrame {
 		
 	}
 	
-	private void populateDropDown(ArrayList<StudentGroup2> students){
-		//TODO fetch StudentGroup name <String>
-	}
+
+
 }
 
