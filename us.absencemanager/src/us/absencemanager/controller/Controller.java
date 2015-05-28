@@ -49,7 +49,6 @@ public class Controller {
 	
 	public List<Unit> getUnits() {
 		ArrayList<Unit> temp = new ArrayList<Unit>(dl.getUnits());	
-		System.out.println(temp);
 		return Collections.unmodifiableList(temp);
 	}
 	
@@ -75,6 +74,12 @@ public class Controller {
 	
 	public void addAbsenceToStudent(String studentId, String unitId, String classroom, String date) throws NoDataFoundException {
 		dl.addAbsenceToStudent(studentId, new Absence(unitId, classroom, date));
+	}
+	
+	public List<Student> getStudentsInGroup(int groupId) throws NoDataFoundException {
+		StudentGroup sg = dl.findGroupById(groupId);
+		ArrayList<Student> temp = sg.getStudents();	
+		return Collections.unmodifiableList(temp);
 	}
 	
 	public void saveAll(String filePath) throws IOException {
