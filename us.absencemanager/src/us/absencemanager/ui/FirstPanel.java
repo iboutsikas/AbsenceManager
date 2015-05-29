@@ -13,42 +13,50 @@ public class FirstPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = -5182836969988472594L;
 	private JButton okBtn;
-	private JLabel groupLabel, dateLabel;
-	private JComboBox<String> dropDown;
-	private JPanel centerPanel;
+	private JLabel groupLabel, timeLabel, hourLb, minLb;
+	private JComboBox<String> dropDownGroup;
+	private JPanel centerPanel, timePanel;
+	private JSpinner hour, min;
 	
 	public FirstPanel() {
 		super();
-		
+		this.setBorder(BorderFactory.createEmptyBorder(10, 1, 1, 1));
 		this.setLayout(new BorderLayout());
 		
+		this.createCenterPanel();
+		this.add(centerPanel, BorderLayout.CENTER);
+	}
+	
+	public void createCenterPanel(){
 		centerPanel = new JPanel();
 		centerPanel.setLayout(new GridLayout(2, 2));
-		this.add(centerPanel, BorderLayout.CENTER);
-		
 		
 		groupLabel = new JLabel("Choose Group Of Students:");
+		groupLabel.setVerticalAlignment(JLabel.BOTTOM);
 		centerPanel.add(groupLabel);
 		
-		dropDown = new JComboBox<String>();
-		dropDown.addItem("Add new group...");
-		centerPanel.add(dropDown);
+		dropDownGroup = new JComboBox<String>();
+		dropDownGroup.addItem("Add new group...");
+		centerPanel.add(dropDownGroup);
 		
-		dateLabel = new JLabel("Choose date & time:");
-		this.add(dateLabel);
+		timeLabel = new JLabel("Choose time:");
+		timeLabel.setVerticalAlignment(JLabel.BOTTOM);
+		centerPanel.add(timeLabel);
 		
-		okBtn = new JButton("Submit");
-		this.add(okBtn, BorderLayout.SOUTH);
-		okBtn.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		
-		
-		
-		
+		timePanel = new JPanel();
+		timePanel.setLayout(new FlowLayout());
+		hourLb = new JLabel("Hour:");
+		minLb  =new JLabel("Minutes:");
+		hour = new JSpinner();
+		min = new JSpinner();
+		timePanel.add(hourLb);
+		timePanel.add(hour);
+		timePanel.add(minLb);
+		timePanel.add(min);
+		centerPanel.add(timePanel);
+	}
+	
+	public void populateList(String item){
+		dropDownGroup.addItem(item);
 	}
 }
