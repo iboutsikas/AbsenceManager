@@ -25,11 +25,14 @@ public class MainFrame extends JFrame {
 	private JButton okBtn, backBtn;
 	private JLabel footerLb;
 	private Controller controller;
+	private AddStudPanel addPnl;
+	private JFrame thisFrame;
 	
 	
 	public MainFrame(){
 		super();
 		
+		thisFrame = this;
 		controller = Controller.getInstance();
 		Container mainContainer = getContentPane();
 		mainContainer.setLayout(new BorderLayout());
@@ -63,6 +66,16 @@ public class MainFrame extends JFrame {
 		menuHelp=new JMenu("Help");
 		
 		studentsAdd=new JMenuItem("Add Student");
+		studentsAdd.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				addPnl = new AddStudPanel(thisFrame);
+				
+			}
+			
+		});
+		
 		studentsEdit=new JMenuItem("Edit Student");
 		studentsRemove=new JMenuItem("Remove Student");
 		groupOfStudentsAdd=new JMenuItem("Add group of students");
