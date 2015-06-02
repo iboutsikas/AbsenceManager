@@ -119,22 +119,31 @@ public class MainFrame extends JFrame implements AdditionListener {
 	
 	public void moveToGroupEvent(String id) {
 		try {
-			c.addStudentToGroup(id, currentGroupId);
-			tablePanel.refresh();
+			if (currentGroupId != 0) {
+				c.addStudentToGroup(id, currentGroupId);
+				tablePanel.refresh();
+			} else {
+				JOptionPane.showMessageDialog(this, "You should first load a group", "Warning", JOptionPane.WARNING_MESSAGE);
+			}			
 		} catch (NoDataFoundException e) {
 			e.printStackTrace();
 		} catch (AlreadyExistsException e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(MainFrame.this, e.getMessage(), "Warning", JOptionPane.WARNING_MESSAGE);
 		}
 	}
 	
 	public void removeFromGroupEvent() {
-		String sId = tablePanel.getSelectedStudent();
+		
 		try {
+			String sId = tablePanel.getSelectedStudent();
 			c.removeStudentFromGroup(sId, currentGroupId);
 			tablePanel.refresh();
 		} catch (NoDataFoundException e) {
 			e.printStackTrace();
+		} catch (IllegalStateException e) {
+			JOptionPane.showMessageDialog(MainFrame.this, e.getMessage(), "Warning", JOptionPane.WARNING_MESSAGE);
+		} catch (NullPointerException e) {
+			JOptionPane.showMessageDialog(MainFrame.this, "You should load a group first", "Warning", JOptionPane.WARNING_MESSAGE);
 		}
 	}
 }

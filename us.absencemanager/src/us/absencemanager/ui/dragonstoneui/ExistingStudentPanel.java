@@ -11,6 +11,7 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
@@ -46,8 +47,12 @@ public class ExistingStudentPanel extends JPanel {
 		addToGroupButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Student s = (Student)model.getElementAt(studentList.getSelectedIndex());
-				listener.moveToGroupEvent(s.getId());
+				try {
+					Student s = (Student)model.getElementAt(studentList.getSelectedIndex());
+					listener.moveToGroupEvent(s.getId());
+				} catch (ArrayIndexOutOfBoundsException ex) {
+					JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(ExistingStudentPanel.this), "Select a student from the list first", "Warning", JOptionPane.WARNING_MESSAGE);
+				}
 			}
 		});
 		removeFromGroupButton.addActionListener(new ActionListener() {

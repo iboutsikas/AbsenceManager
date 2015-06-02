@@ -13,10 +13,15 @@ public class StudentTableModel extends AbstractTableModel {
 	 * @see javax.swing.table.AbstractTableModel#getColumnClass(int)
 	 */
 	@Override
-	public Class<?> getColumnClass(int arg0) {
-		// TODO Auto-generated method stub
-		return super.getColumnClass(arg0);
+	public Class<?> getColumnClass(int col) {
+		switch(col) {
+			case 3:
+				return Boolean.class;
+			default:
+				return String.class;
+		}
 	}
+	
 
 	/* (non-Javadoc)
 	 * @see javax.swing.table.AbstractTableModel#getColumnName(int)
@@ -75,5 +80,4 @@ public class StudentTableModel extends AbstractTableModel {
 	public void setData(List<Student> list) {
 		this.list = list;
 	}
-
 }

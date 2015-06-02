@@ -2,8 +2,10 @@ package us.absencemanager.ui.dragonstoneui;
 
 import java.util.List;
 
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 
 
 public class TablePanel extends JScrollPane {
@@ -26,7 +28,11 @@ public class TablePanel extends JScrollPane {
 		model.fireTableDataChanged();
 	}
 	
-	public String getSelectedStudent() {
-		return model.getValueAt(table.getSelectedRow(), 0).toString();
+	public String getSelectedStudent() throws IllegalStateException {
+		try {
+			return model.getValueAt(table.getSelectedRow(), 0).toString();
+		} catch (IndexOutOfBoundsException e) {
+			throw new IllegalStateException("You should select a student from the table first");
+		}
 	}
 }
