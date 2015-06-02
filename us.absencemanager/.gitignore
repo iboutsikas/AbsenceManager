@@ -1,6 +1,14 @@
 /bin/
+<<<<<<< HEAD
 
 
 *.dat
 
 *.class
+=======
+
+
+*.dat
+
+*.class
+>>>>>>> refs/heads/devB
