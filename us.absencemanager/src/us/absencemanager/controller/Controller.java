@@ -72,6 +72,11 @@ public class Controller {
 			sg.addStudent(s);
 	}
 	
+	public void removeStudentFromGroup(String studentId, int groupId) throws NoDataFoundException {
+		StudentGroup sg = dl.findGroupById(groupId);
+		sg.removeStudent(studentId);
+	}
+	
 	public void addAbsenceToStudent(String studentId, String unitId, String classroom, String date) throws NoDataFoundException {
 		dl.addAbsenceToStudent(studentId, new Absence(unitId, classroom, date));
 	}

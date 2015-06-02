@@ -113,7 +113,27 @@ public class MainFrame extends JFrame implements AdditionListener {
 		try {
 			c.saveAll("");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void moveToGroupEvent(String id) {
+		try {
+			c.addStudentToGroup(id, currentGroupId);
+			tablePanel.refresh();
+		} catch (NoDataFoundException e) {
+			e.printStackTrace();
+		} catch (AlreadyExistsException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void removeFromGroupEvent() {
+		String sId = tablePanel.getSelectedStudent();
+		try {
+			c.removeStudentFromGroup(sId, currentGroupId);
+			tablePanel.refresh();
+		} catch (NoDataFoundException e) {
 			e.printStackTrace();
 		}
 	}

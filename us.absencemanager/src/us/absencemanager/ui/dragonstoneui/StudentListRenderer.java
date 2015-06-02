@@ -11,6 +11,7 @@ import javax.swing.ListCellRenderer;
 
 import us.absencemanager.model.Student;
 
+@SuppressWarnings("rawtypes")
 public class StudentListRenderer implements ListCellRenderer {
 	private JPanel panel;
 	private JLabel label;
@@ -20,8 +21,8 @@ public class StudentListRenderer implements ListCellRenderer {
 	public StudentListRenderer() {
 		panel = new JPanel();
 		label = new JLabel();
-		selectedColor = new Color(210, 201, 255);
-		selectedColor = Color.WHITE;
+		selectedColor = new Color(222, 71, 150);
+		defaultColor = Color.WHITE;
 		
 		panel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		panel.add(label);
@@ -32,12 +33,8 @@ public class StudentListRenderer implements ListCellRenderer {
 	public Component getListCellRendererComponent(JList list, Object value,
 			int index, boolean isSelected, boolean cellHasFocus) {
 		Student s = (Student)value;
+		panel.setBackground(isSelected ? selectedColor: defaultColor);
 		label.setText(s.getId() + " - " + s.getLastName() + " " + s.getFirstName());
-		if (cellHasFocus) {
-			panel.setBackground(selectedColor);
-		} else {
-			panel.setBackground(defaultColor);
-		}
 		return panel;
 	}
 

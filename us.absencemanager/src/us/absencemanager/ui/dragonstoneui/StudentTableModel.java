@@ -47,7 +47,12 @@ public class StudentTableModel extends AbstractTableModel {
 
 	@Override
 	public int getRowCount() {
-		return list.size();
+		try{
+			return list.size();
+		} catch (Exception e) {
+			return 0;
+		}
+		
 	}
 
 	@Override

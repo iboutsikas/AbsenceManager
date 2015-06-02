@@ -25,4 +25,8 @@ public class TablePanel extends JScrollPane {
 	public void refresh() {
 		model.fireTableDataChanged();
 	}
+	
+	public String getSelectedStudent() {
+		return model.getValueAt(table.getSelectedRow(), 0).toString();
+	}
 }

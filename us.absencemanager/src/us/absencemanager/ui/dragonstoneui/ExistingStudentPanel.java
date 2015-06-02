@@ -43,6 +43,19 @@ public class ExistingStudentPanel extends JPanel {
 		removeFromGroupButton.setPreferredSize(dim);
 		buttonPanel = new JPanel(new GridLayout(3,1));
 		
+		addToGroupButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Student s = (Student)model.getElementAt(studentList.getSelectedIndex());
+				listener.moveToGroupEvent(s.getId());
+			}
+		});
+		removeFromGroupButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				listener.removeFromGroupEvent();
+			}
+		});
 		newStudentButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -52,15 +65,16 @@ public class ExistingStudentPanel extends JPanel {
 			}
 		});
 		
+		
 		setLayout(new BorderLayout());
 		buttonPanel.add(addToGroupButton);
 		buttonPanel.add(removeFromGroupButton);
 		buttonPanel.add(newStudentButton);
-		listPane.setViewportView(studentList);
-		add(listPane, BorderLayout.CENTER);
+		//listPane.setViewportView(studentList);
+		add(studentList, BorderLayout.CENTER);
 		add(buttonPanel, BorderLayout.EAST);
 		
-		Border titledBorder = BorderFactory.createTitledBorder("Controls");
+		Border titledBorder = BorderFactory.createTitledBorder("Existing Students");
 		Border spaceBorder = BorderFactory.createEmptyBorder(3, 10, 5, 10);
 		setBorder(BorderFactory.createCompoundBorder(spaceBorder, titledBorder));
 	}
