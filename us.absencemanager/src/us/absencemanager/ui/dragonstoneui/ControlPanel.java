@@ -6,6 +6,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -16,9 +17,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerDateModel;
 import javax.swing.border.Border;
-
-import us.absencemanager.model.StudentGroup;
+import javax.swing.text.DateFormatter;
 
 @SuppressWarnings({"serial","rawtypes"})
 public class ControlPanel extends JPanel {
@@ -34,6 +35,8 @@ public class ControlPanel extends JPanel {
 	private JLabel timeLabel;
 	private JButton loadButton;
 	private ControlListener listener;
+	private GroupComboModel groupModel;
+	private UnitComboModel unitModel;
 	
 	
 	public ControlPanel(List groupList, List unitList) {
@@ -42,7 +45,7 @@ public class ControlPanel extends JPanel {
 		loadButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int gId = ((StudentGroup)groupSelectionBox.getSelectedItem()).getID();
+				int gId = groupModel.getSelectedId();
 				ControlEvent ce = new ControlEvent(this, gId);
 				listener.loadEvent(ce);
 			}
@@ -126,9 +129,14 @@ public class ControlPanel extends JPanel {
 	@SuppressWarnings({ "unchecked" })
 	private void initializeComponents(List groupList, List unitList) {
 		//Initialize components
-		groupSelectionBox = new JComboBox(new DefaultComboBoxModel(groupList.toArray()));
+		groupModel = new GroupComboModel();
+		groupModel.setData(groupList);
+		groupSelectionBox = new JComboBox(groupModel);
+		groupSelectionBox.setSelectedIndex(0);
 		groupSelectionLabel = new JLabel("Select group:");
-		unitSelectionBox = new JComboBox(new DefaultComboBoxModel(unitList.toArray()));
+		unitModel = new UnitComboModel();
+		unitModel.setData(unitList);
+		unitSelectionBox = new JComboBox(unitModel);
 		unitSelectionLabel = new JLabel("Select unit:");
 		classroomText = new JTextField(5);
 		Dimension dim = classroomText.getPreferredSize();
@@ -140,19 +148,39 @@ public class ControlPanel extends JPanel {
 		timeSpinner = new JSpinner();
 		timeLabel = new JLabel("Select time:");
 		loadButton = new JButton("Load Students");
+		
+		//Setup time spinner
+		Calendar calendar = Calendar.getInstance();
+		SpinnerDateModel timeModel = new SpinnerDateModel();
+		timeModel.setValue(calendar.getTime());
+		timeSpinner.setModel(timeModel);
+		JSpinner.DateEditor timeEditor = new JSpinner.DateEditor(timeSpinner, "HH : mm");
+		DateFormatter timeFormatter = (DateFormatter)timeEditor.getTextField().getFormatter();
+		timeFormatter.setAllowsInvalid(false); // this makes what you want
+		timeFormatter.setOverwriteMode(true);
+		timeSpinner.setEditor(timeEditor);
+		
+		//Setup date spinner
+		SpinnerDateModel dateModel = new SpinnerDateModel();
+		dateModel.setValue(calendar.getTime());
+		dateSpinner.setModel(dateModel);
+		JSpinner.DateEditor dateEditor = new JSpinner.DateEditor(dateSpinner, "dd / MM / yyyy");
+		DateFormatter dateFormatter = (DateFormatter)dateEditor.getTextField().getFormatter();
+		dateFormatter.setAllowsInvalid(false); // this makes what you want
+		dateFormatter.setOverwriteMode(true);
+		dateSpinner.setEditor(dateEditor);
 	}
 	
 	public void setControlListener(ControlListener listener) {
 		this.listener = listener;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public void setGroupData(List list) {
-		groupSelectionBox.setModel(new DefaultComboBoxModel(list.toArray()));
+	public void refreshGroups(List groupList) {
+		groupModel.setData(groupList);
 	}
 	
-	@SuppressWarnings("unchecked")
-	public void setUnitData(List list) {
-		unitSelectionBox.setModel(new DefaultComboBoxModel(list.toArray()));
+
+	public void refreshUnits(List unitList) {
+		unitModel.setData(unitList);
 	}
 }

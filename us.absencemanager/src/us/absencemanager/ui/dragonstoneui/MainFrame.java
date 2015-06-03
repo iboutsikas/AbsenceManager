@@ -52,6 +52,7 @@ public class MainFrame extends JFrame implements AdditionListener {
 			public void loadEvent(ControlEvent ce) {
 				try {
 					tablePanel.initModel();
+					tablePanel.setModelListener(MainFrame.this);
 					tablePanel.setData(c.getStudentsInGroup(ce.getGroupId()));
 					currentGroupId = ce.getGroupId();
 					eStPanel.populateList(c.getStudents(), c.getStudentsInGroup(currentGroupId));
@@ -63,10 +64,6 @@ public class MainFrame extends JFrame implements AdditionListener {
 		
 		eStPanel.populateList(c.getStudents());
 		eStPanel.setAdditionListener(this);
-		
-		/**
-		 * This method handles all additions from the new menu.
-		 */
 		menuBar.setAdditionListener(this);
 		
 		
@@ -86,6 +83,9 @@ public class MainFrame extends JFrame implements AdditionListener {
 		
 	}
 	
+	/**
+	 * This method handles all additions from the new menu.
+	 */
 	public void additionEventRaised(CustomEvent ev) {
 		if(ev instanceof StudentEvent) { // Student Events
 			StudentEvent s = (StudentEvent)ev;
@@ -104,7 +104,7 @@ public class MainFrame extends JFrame implements AdditionListener {
 			GroupEvent ge = (GroupEvent) ev;
 			try {
 				c.addStudentGroup(ge.getName());
-				controlPanel.setGroupData(c.getStudentGroups());
+				controlPanel.refreshGroups(c.getStudentGroups());
 			} catch (AlreadyExistsException e) {
 				JOptionPane.showMessageDialog(MainFrame.this, "Could not add the group!\nIf you are getting this there is something really wrong with the IDs", "Error", JOptionPane.ERROR_MESSAGE);
 			}
@@ -112,7 +112,7 @@ public class MainFrame extends JFrame implements AdditionListener {
 			UnitEvent ue = (UnitEvent) ev;
 			try {
 				c.addUnit(ue.getId(), ue.getName(), ue.getAbs());
-				controlPanel.setUnitData(c.getUnits());
+				controlPanel.refreshUnits(c.getUnits());
 			} catch (AlreadyExistsException e) {
 				JOptionPane.showMessageDialog(MainFrame.this, "The unit already exists (ID should be unique)!", "Error", JOptionPane.ERROR_MESSAGE);
 			}
@@ -132,6 +132,7 @@ public class MainFrame extends JFrame implements AdditionListener {
 				c.addStudentToGroup(id, currentGroupId);
 				tablePanel.setData(c.getStudentsInGroup(currentGroupId));
 				tablePanel.refresh();
+				eStPanel.populateList(c.getStudents(), c.getStudentsInGroup(currentGroupId));
 			} else {
 				JOptionPane.showMessageDialog(this, "You should first load a group", "Warning", JOptionPane.WARNING_MESSAGE);
 			}			
@@ -143,7 +144,6 @@ public class MainFrame extends JFrame implements AdditionListener {
 	}
 	
 	public void removeFromGroupEvent() {
-		
 		try {
 			String sId = tablePanel.getSelectedStudent();
 			c.removeStudentFromGroup(sId, currentGroupId);
@@ -156,5 +156,15 @@ public class MainFrame extends JFrame implements AdditionListener {
 		} catch (NullPointerException e) {
 			JOptionPane.showMessageDialog(MainFrame.this, "You should load a group first", "Warning", JOptionPane.WARNING_MESSAGE);
 		}
+	}
+
+	@Override
+	public void addAbsenceEvent(String id) {
+		System.out.println("Adding absence to Student: " + id);
+	}
+
+	@Override
+	public void removeAbsenceEvent(String id) {
+		System.out.println("Removing absence to Student: " + id);
 	}
 }

@@ -95,6 +95,7 @@ public class ExistingStudentPanel extends JPanel {
 	}
 	
 	public void populateList(List<Student> list) {
+		model.clear();
 		for (Student s: list) {
 			model.addElement(s);
 		}

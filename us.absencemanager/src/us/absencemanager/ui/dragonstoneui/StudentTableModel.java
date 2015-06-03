@@ -11,6 +11,7 @@ public class StudentTableModel extends AbstractTableModel {
 	private List<Student> list;
 	private List<Boolean> bools;
 	private String[] columnNames = new String[]{"ID", "First Name", "Last Name", " Is Present"};
+	private AdditionListener listener;
 	/* (non-Javadoc)
 	 * @see javax.swing.table.AbstractTableModel#getColumnClass(int)
 	 */
@@ -53,12 +54,15 @@ public class StudentTableModel extends AbstractTableModel {
 	@Override
 	public void setValueAt(Object inValue, int row, int col) {
 		boolean value = (Boolean)inValue;
+		String id = getValueAt(row, 0).toString();
 		switch(col) {
 			case 3:
 				bools.add(row, value);
-				/**
-				 * TODO add Absence taking logic here
-				 */
+				if(value) {
+					listener.addAbsenceEvent(id);
+				} else {
+					listener.removeAbsenceEvent(id);
+				}
 				
 		}
 		fireTableCellUpdated(row, col);
@@ -67,7 +71,7 @@ public class StudentTableModel extends AbstractTableModel {
 
 	@Override
 	public int getColumnCount() {
-		return 4;
+		return columnNames.length;
 	}
 
 	@Override
@@ -103,5 +107,13 @@ public class StudentTableModel extends AbstractTableModel {
 		for (Student s: list) {
 			bools.add(false);
 		}
+	}
+	
+	public void addBoolean() {
+		bools.add(false);
+	}
+	
+	public void setModelListener(AdditionListener listener) {
+		this.listener = listener;
 	}
 }

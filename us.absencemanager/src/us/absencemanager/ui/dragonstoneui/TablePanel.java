@@ -25,8 +25,8 @@ public class TablePanel extends JScrollPane {
 	}
 	
 	public void refresh() {
-		//model.fireTableDataChanged();
-		model.fireTableStructureChanged();
+		model.addBoolean();
+		model.fireTableDataChanged();
 	}
 	
 	public String getSelectedStudent() throws IllegalStateException {
@@ -35,5 +35,9 @@ public class TablePanel extends JScrollPane {
 		} catch (IndexOutOfBoundsException e) {
 			throw new IllegalStateException("You should select a student from the table first");
 		}
+	}
+	
+	public void setModelListener(AdditionListener listener) {
+		model.setModelListener(listener);
 	}
 }
