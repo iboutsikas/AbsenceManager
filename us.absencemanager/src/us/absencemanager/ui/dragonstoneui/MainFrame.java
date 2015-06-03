@@ -92,13 +92,15 @@ public class MainFrame extends JFrame implements AdditionListener {
 			try {
 				c.addStudent(s.getId(), s.getfName(), s.getlName(), s.getEmail());
 				if(s.getAdd()) {
-					c.addStudentToGroup(s.getId(), 1);
-					tablePanel.refresh();
+					try {
+						c.addStudentToGroup(s.getId(), 1);
+						tablePanel.refresh();
+					} catch (Exception e) {
+						JOptionPane.showMessageDialog(MainFrame.this, "There is no group to add the student", "Error", JOptionPane.ERROR_MESSAGE);
+					}
 				}
 			} catch (AlreadyExistsException e) {
 				JOptionPane.showMessageDialog(MainFrame.this, "The student already exists (ID should be unique)!", "Error", JOptionPane.ERROR_MESSAGE);
-			} catch (NoDataFoundException e) {
-				JOptionPane.showMessageDialog(MainFrame.this, "Could not add student to current group!", "Error", JOptionPane.ERROR_MESSAGE);
 			}
 		} else if (ev instanceof GroupEvent) { // Group Events
 			GroupEvent ge = (GroupEvent) ev;
@@ -170,6 +172,11 @@ public class MainFrame extends JFrame implements AdditionListener {
 
 	@Override
 	public void removeAbsenceEvent(String id) {
-		System.out.println("Removing absence to Student: " + id);
+		ControlPanelInfo cpi = controlPanel.getPanelInfo();
+		try {
+			c.removeAbsenceFromStudent(id, cpi.getUnitId(), cpi.getClassroom(), cpi.getDateTime());
+		} catch (NoDataFoundException e) {
+			JOptionPane.showMessageDialog(MainFrame.this, e.getMessage(), "Warning", JOptionPane.WARNING_MESSAGE);
+		}
 	}
 }

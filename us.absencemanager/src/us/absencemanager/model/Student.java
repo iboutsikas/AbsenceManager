@@ -62,12 +62,20 @@ public class Student implements Serializable{
 	
 	
 	/**
-	 * @param id the Unit to get Absences for.
-	 * @return ArrayList<Absence> the Absences for the unit specified
+	 * Returns a Map of the absences of the student
+	 * @return TreeMap<String, ArrayList<Absence>> a sorted TreeMap with unit ids as keys and an array list of absences for that unit as values.
 	 */
 	public TreeMap<String, ArrayList<Absence>> getAbsences() {
 		return this.absences;
-	}	
+	}
+	
+	public void removeAbsence(Absence a) {
+		String unitId = a.getUnitId();
+		ArrayList<Absence> temp = absences.get(unitId);
+		temp.remove(a);
+		absences.put(unitId, temp);
+	}
+	
 	/**
 	 * @return the Id
 	 */

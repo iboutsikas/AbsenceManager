@@ -137,6 +137,7 @@ public class ControlPanel extends JPanel {
 		unitModel = new UnitComboModel();
 		unitModel.setData(unitList);
 		unitSelectionBox = new JComboBox(unitModel);
+		unitSelectionBox.setSelectedIndex(0);
 		unitSelectionLabel = new JLabel("Select unit:");
 		classroomText = new JTextField(5);
 		Dimension dim = classroomText.getPreferredSize();
