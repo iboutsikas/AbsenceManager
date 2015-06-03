@@ -98,7 +98,7 @@ public class AbsenceDialog extends JDialog {
 					if(booleanList.get(i) == false){
 						try {
 							cont.addAbsenceToStudent((String)tableModel.getValueAt(i, 0), unitId, classroom, date);
-							cont.getStudents().get(i).displayAbsences();
+							//cont.getStudents().get(i).displayAbsences();
 							
 						} catch (NoDataFoundException e1) {
 							e1.printStackTrace();
