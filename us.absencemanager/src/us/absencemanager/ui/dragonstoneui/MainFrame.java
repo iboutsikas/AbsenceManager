@@ -27,7 +27,13 @@ public class MainFrame extends JFrame implements AdditionListener {
 		try {
 			c.loadAll();
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(this, "There was an error loading previous data", "Load Error", JOptionPane.ERROR_MESSAGE);
+			String groupName = JOptionPane.showInputDialog(MainFrame.this, "We detected that you have no files saved.\n Please provide a name for your first group!", "Fresh install", JOptionPane.INFORMATION_MESSAGE);
+			try {
+				c.addStudentGroup(groupName);
+			} catch (AlreadyExistsException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 		
 		
