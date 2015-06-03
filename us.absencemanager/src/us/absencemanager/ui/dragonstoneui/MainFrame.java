@@ -54,6 +54,7 @@ public class MainFrame extends JFrame implements AdditionListener {
 					tablePanel.initModel();
 					tablePanel.setData(c.getStudentsInGroup(ce.getGroupId()));
 					currentGroupId = ce.getGroupId();
+					eStPanel.populateList(c.getStudents(), c.getStudentsInGroup(currentGroupId));
 				} catch (NoDataFoundException e) {
 					JOptionPane.showMessageDialog(MainFrame.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 				}
@@ -76,8 +77,10 @@ public class MainFrame extends JFrame implements AdditionListener {
 		add(tablePanel, BorderLayout.CENTER);
 		
 		setTitle("Absence Manager");
-		setPreferredSize(new Dimension(1000, 600));
-		setSize(new Dimension(1000, 600));
+		Dimension dim = new Dimension(1000, 600);
+		setPreferredSize(dim);
+		setMinimumSize(dim);
+		setSize(dim);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
@@ -127,6 +130,7 @@ public class MainFrame extends JFrame implements AdditionListener {
 		try {
 			if (currentGroupId != 0) {
 				c.addStudentToGroup(id, currentGroupId);
+				tablePanel.setData(c.getStudentsInGroup(currentGroupId));
 				tablePanel.refresh();
 			} else {
 				JOptionPane.showMessageDialog(this, "You should first load a group", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -144,6 +148,7 @@ public class MainFrame extends JFrame implements AdditionListener {
 			String sId = tablePanel.getSelectedStudent();
 			c.removeStudentFromGroup(sId, currentGroupId);
 			tablePanel.refresh();
+			eStPanel.populateList(c.getStudents(), c.getStudentsInGroup(currentGroupId));
 		} catch (NoDataFoundException e) {
 			e.printStackTrace();
 		} catch (IllegalStateException e) {

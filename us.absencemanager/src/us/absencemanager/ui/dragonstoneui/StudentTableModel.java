@@ -1,5 +1,6 @@
 package us.absencemanager.ui.dragonstoneui;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
@@ -8,6 +9,7 @@ import us.absencemanager.model.Student;
 
 public class StudentTableModel extends AbstractTableModel {
 	private List<Student> list;
+	private List<Boolean> bools;
 	private String[] columnNames = new String[]{"ID", "First Name", "Last Name", " Is Present"};
 	/* (non-Javadoc)
 	 * @see javax.swing.table.AbstractTableModel#getColumnClass(int)
@@ -45,6 +47,24 @@ public class StudentTableModel extends AbstractTableModel {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see javax.swing.table.AbstractTableModel#setValueAt(java.lang.Object, int, int)
+	 */
+	@Override
+	public void setValueAt(Object inValue, int row, int col) {
+		boolean value = (Boolean)inValue;
+		switch(col) {
+			case 3:
+				bools.add(row, value);
+				/**
+				 * TODO add Absence taking logic here
+				 */
+				
+		}
+		fireTableCellUpdated(row, col);
+	}
+
+
 	@Override
 	public int getColumnCount() {
 		return 4;
@@ -71,7 +91,7 @@ public class StudentTableModel extends AbstractTableModel {
 			case 2:
 				return s.getLastName();
 			case 3:
-				return false;			
+				return bools.get(row);			
 		}
 		return null;
 	}
@@ -79,5 +99,9 @@ public class StudentTableModel extends AbstractTableModel {
 	
 	public void setData(List<Student> list) {
 		this.list = list;
+		this.bools = new ArrayList<Boolean>();
+		for (Student s: list) {
+			bools.add(false);
+		}
 	}
 }
