@@ -160,7 +160,12 @@ public class MainFrame extends JFrame implements AdditionListener {
 
 	@Override
 	public void addAbsenceEvent(String id) {
-		System.out.println("Adding absence to Student: " + id);
+		ControlPanelInfo cpi = controlPanel.getPanelInfo();
+		try {
+			c.addAbsenceToStudent(id, cpi.getUnitId(), cpi.getClassroom(), cpi.getDateTime());
+		} catch (NoDataFoundException e) {
+			JOptionPane.showMessageDialog(MainFrame.this, e.getMessage(), "Warning", JOptionPane.WARNING_MESSAGE);
+		}
 	}
 
 	@Override
