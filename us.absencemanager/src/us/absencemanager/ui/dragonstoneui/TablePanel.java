@@ -25,7 +25,8 @@ public class TablePanel extends JScrollPane {
 	}
 	
 	public void refresh() {
-		model.fireTableDataChanged();
+		//model.fireTableDataChanged();
+		model.fireTableStructureChanged();
 	}
 	
 	public String getSelectedStudent() throws IllegalStateException {

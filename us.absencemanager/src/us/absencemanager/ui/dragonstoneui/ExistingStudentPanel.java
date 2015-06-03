@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -75,8 +76,8 @@ public class ExistingStudentPanel extends JPanel {
 		buttonPanel.add(addToGroupButton);
 		buttonPanel.add(removeFromGroupButton);
 		buttonPanel.add(newStudentButton);
-		//listPane.setViewportView(studentList);
-		add(studentList, BorderLayout.CENTER);
+		listPane.setViewportView(studentList);
+		add(listPane, BorderLayout.CENTER);
 		add(buttonPanel, BorderLayout.EAST);
 		
 		Border titledBorder = BorderFactory.createTitledBorder("Existing Students");
@@ -84,8 +85,17 @@ public class ExistingStudentPanel extends JPanel {
 		setBorder(BorderFactory.createCompoundBorder(spaceBorder, titledBorder));
 	}
 	
+	public void populateList(List<Student> allStudents, List<Student> groupStudents) {
+		List<Student> temp = new ArrayList<Student>(allStudents);
+		temp.removeAll(groupStudents);
+		model.clear();
+		for(Student s: temp) {
+			model.addElement(s);
+		}
+	}
+	
 	public void populateList(List<Student> list) {
-		for(Student s: list) {
+		for (Student s: list) {
 			model.addElement(s);
 		}
 	}
