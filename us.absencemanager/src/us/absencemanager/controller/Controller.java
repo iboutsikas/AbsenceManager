@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import us.absencemanager.exceptions.AlreadyExistsException;
 import us.absencemanager.exceptions.NoDataFoundException;
@@ -55,6 +56,10 @@ public class Controller {
 	public void addStudent(String id, String firstName, String lastName, String email) throws AlreadyExistsException {
 		Student s = new Student(id,firstName,lastName,email);
 		dl.addStudent(s);
+	}
+	public Map<String, ArrayList<Absence>> getStudentAbsences(String studentID) throws NoDataFoundException {
+		Student s = dl.findStudentById(studentID);
+		return Collections.unmodifiableMap(s.getAbsences());
 	}
 	
 	public void addStudentGroup(String name) throws AlreadyExistsException {

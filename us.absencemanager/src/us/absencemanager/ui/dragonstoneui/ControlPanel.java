@@ -6,11 +6,11 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -179,6 +179,13 @@ public class ControlPanel extends JPanel {
 		groupModel.setData(groupList);
 	}
 	
+	public ControlPanelInfo getPanelInfo() {
+		String date = new SimpleDateFormat("dd / MM / yyyy").format(dateSpinner.getValue());
+		String time = new SimpleDateFormat("HH : mm").format(timeSpinner.getValue());
+		String dateTime = date + " - " + time;
+		String classroom = classroomText.getText();
+		return new ControlPanelInfo(groupModel.getSelectedId(), unitModel.getSelectedId(), dateTime , classroom);
+	}
 
 	public void refreshUnits(List unitList) {
 		unitModel.setData(unitList);
