@@ -102,6 +102,7 @@ public class Unit implements Serializable{
 	 */
 	@Override
 	public String toString() {
-		return "Unit [id=" + id + ", name=" + name + "]";
+		//return "Unit [id=" + id + ", name=" + name + "]";
+		return id+" - "+name;
 	}
 }

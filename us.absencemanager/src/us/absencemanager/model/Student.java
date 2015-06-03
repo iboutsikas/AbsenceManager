@@ -22,7 +22,7 @@ public class Student implements Serializable{
 	private String firstName;
 	private String lastName;
 	private String email;
-	private Map<String, ArrayList<Absence>> absences;
+	private TreeMap<String, ArrayList<Absence>> absences;
 	
 	/**
 	 * Constructs and initializes a Student with given ID, first name, last name, and email.
@@ -60,27 +60,13 @@ public class Student implements Serializable{
 		}
 	}
 	
-	/**
-	 * Displays all the absences in sysout, in tabular format.
-	 */
-	public void displayAbsences() {
-		for(Map.Entry<String, ArrayList<Absence>> entry : absences.entrySet()) {
-			String key = entry.getKey();
-			ArrayList<Absence> value = entry.getValue();
 	
-			System.out.println("Unit "+ key +":");
-			for(Absence a : value) {
-				System.out.println("\t"+a);
-			}
-		}
-	}
 	/**
 	 * @param id the Unit to get Absences for.
 	 * @return ArrayList<Absence> the Absences for the unit specified
 	 */
-	public ArrayList<Absence> getAbsenceList(String id) {
-		ArrayList<Absence> temp = this.absences.get(id);	
-		return temp;
+	public TreeMap<String, ArrayList<Absence>> getAbsences() {
+		return this.absences;
 	}	
 	/**
 	 * @return the Id
