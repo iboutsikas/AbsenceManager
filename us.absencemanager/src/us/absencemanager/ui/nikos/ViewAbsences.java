@@ -1,65 +1,74 @@
 package us.absencemanager.ui.nikos;
 
-import javax.swing.JFrame;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.AbstractTableModel;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-
-public class ViewAbsences extends JPanel {
-
-    public ViewAbsences() {
-        super(new GridLayout(1,0));
-
-        String[] columnNames = {"ID",
-                                "Name",
-                                "Email",
-                                "",
-                                "Absence"};
-
-        Object[][] data = {
-	    {"Kathy", "Smith",
-	     "Snowboarding", new Integer(5), new Boolean(false)},
-	    {"John", "Doe",
-	     "Rowing", new Integer(3), new Boolean(true)},
-	    {"Sue", "Black",
-	     "Knitting", new Integer(2), new Boolean(false)},
-	    {"Jane", "White",
-	     "Speed reading", new Integer(20), new Boolean(true)},
-	    {"Joe", "Brown",
-	     "Pool", new Integer(10), new Boolean(true)}
-        };
-
-        final JTable table = new JTable(data, columnNames);
-        table.setPreferredScrollableViewportSize(new Dimension(500, 70));
+public class ViewAbsences extends JPanel{
+	private JTable table;
+	private JPanel contPanel,titlePanel;
+	private JLabel titleofPanel,grOfSt;
+	private JComboBox chGrCb;
+	public ViewAbsences(){
+		super(new BorderLayout());
+		
+		table=new JTable(new StudentView());
+		table.setPreferredScrollableViewportSize(new Dimension(500, 70));
         table.setFillsViewportHeight(true);
-
-        //Create the scroll pane and add the table to it.
+        
+      //Create the scroll pane and add the table to it.
         JScrollPane scrollPane = new JScrollPane(table);
 
+        titlePanel=new JPanel(new GridLayout(0,3));
+        titleofPanel=new JLabel("View absences");
+        grOfSt=new JLabel("Group of students:");
+        chGrCb=new JComboBox();
+        titlePanel.add(titleofPanel);
+        titlePanel.add(grOfSt);
+        titlePanel.add(chGrCb);
+        contPanel=new JPanel(new BorderLayout());
         //Add the scroll pane to this panel.
-        add(scrollPane);
+        contPanel.add(scrollPane,BorderLayout.CENTER);
+        contPanel.add(titlePanel,BorderLayout.NORTH);
+        this.add(contPanel,BorderLayout.CENTER);
         
-    }
+        
+        
+        
+        
+	}
+	class StudentView extends AbstractTableModel{
+		private String []columnNames={"ID","First name","Last name","Email"};
+		private String [][]data={{"5","Smith","Snowboarding","papaki@gmail.com"}};
 
-    private void printDebugData(JTable table) {
-        int numRows = table.getRowCount();
-        int numCols = table.getColumnCount();
-        javax.swing.table.TableModel model = table.getModel();
+		@Override
+		public int getColumnCount() {
+			// TODO Auto-generated method stub
+			 return columnNames.length;
+		}
 
-        System.out.println("Value of data: ");
-        for (int i=0; i < numRows; i++) {
-            System.out.print("    row " + i + ":");
-            for (int j=0; j < numCols; j++) {
-                System.out.print("  " + model.getValueAt(i, j));
-            }
-            System.out.println();
+		@Override
+		public int getRowCount() {
+			// TODO Auto-generated method stub
+			 return data.length;
+		}
+		public String getColumnName(int col) {
+            return columnNames[col];
         }
-        System.out.println("--------------------------");
-    }
+
+		@Override
+		public Object getValueAt(int row, int col) {
+            return data[row][col];
+        }
+	        
+		
+	}
+
 }
