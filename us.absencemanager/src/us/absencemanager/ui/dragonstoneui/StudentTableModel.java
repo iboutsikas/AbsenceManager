@@ -120,4 +120,12 @@ public class StudentTableModel extends AbstractTableModel {
 	public void removeBoolean(int row) {
 		bools.remove(row);
 	}
+
+
+	public void resetBooleans() {
+		bools.clear();
+		for(Student s: list) {
+			
+		}
+	}
 }

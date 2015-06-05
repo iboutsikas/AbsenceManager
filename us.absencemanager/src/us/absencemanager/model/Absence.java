@@ -45,8 +45,7 @@ public class Absence implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "Absence [unitID=" + unitId + ", date=" + date + ", classroom="
-				+ classroom + "]";
+		return date + " classroom: " + classroom;
 	}
 	@Override
 	public int hashCode() {

@@ -14,7 +14,7 @@ import us.absencemanager.exceptions.AlreadyExistsException;
 import us.absencemanager.exceptions.NoDataFoundException;
 
 
-public class MainFrame extends JFrame implements AdditionListener {
+public class MainFrame extends JFrame implements AdditionListener, PopupListener {
 	private Controller c = Controller.getInstance();
 	private ControlPanel controlPanel;
 	private JPanel leftPane;
@@ -22,6 +22,7 @@ public class MainFrame extends JFrame implements AdditionListener {
 	private MenuBar menuBar;
 	private ExistingStudentPanel eStPanel;
 	private int currentGroupId;
+	private DisplayAbsencesDialog absenceDialog;
 	
 	public MainFrame() {
 		try {
@@ -41,6 +42,7 @@ public class MainFrame extends JFrame implements AdditionListener {
 		controlPanel = new ControlPanel(c.getStudentGroups(), c.getUnits());
 		leftPane = new JPanel(new GridLayout(2, 1));
 		tablePanel = new TablePanel();
+		tablePanel.addPopupListener(this);
 		eStPanel = new ExistingStudentPanel();
 		
 		/**
@@ -62,6 +64,7 @@ public class MainFrame extends JFrame implements AdditionListener {
 		
 		eStPanel.populateList(c.getStudents());
 		eStPanel.setAdditionListener(this);
+		eStPanel.setPopupListener(this);
 		menuBar.setAdditionListener(this);
 		
 		
@@ -179,5 +182,24 @@ public class MainFrame extends JFrame implements AdditionListener {
 		} catch (NoDataFoundException e) {
 			JOptionPane.showMessageDialog(MainFrame.this, e.getMessage(), "Warning", JOptionPane.WARNING_MESSAGE);
 		}
+	}
+
+	@Override
+	public void deleteStudentEvent(String id) throws NoDataFoundException {
+		c.deleteStudent(id);
+		if(currentGroupId >= 1){
+			c.removeStudentFromGroup(id, currentGroupId);
+			int row = tablePanel.getSelectedRow();
+			tablePanel.refresh(row);
+			eStPanel.populateList(c.getStudents(), c.getStudentsInGroup(currentGroupId));
+		} else {
+			eStPanel.populateList(c.getStudents());
+		}
+	}
+
+	@Override
+	public void displayAbsencesEvent(String studentId) throws NoDataFoundException {
+		absenceDialog = new DisplayAbsencesDialog(MainFrame.this, studentId);
+		
 	}
 }

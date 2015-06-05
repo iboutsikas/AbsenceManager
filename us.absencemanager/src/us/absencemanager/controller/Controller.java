@@ -43,6 +43,11 @@ public class Controller {
 	public void updateStudent(String id, String firstName, String lastName, String email) throws NoDataFoundException {
 		dl.updateStudent(new Student(id,firstName, lastName, email));
 	}
+	
+	public void deleteStudent(String studentId) {
+		dl.deleteStudent(studentId);
+	}
+	
 	public List<StudentGroup> getStudentGroups() {
 		ArrayList<StudentGroup> temp = new ArrayList<StudentGroup>(dl.getStudentGroups());		
 		return Collections.unmodifiableList(temp);
