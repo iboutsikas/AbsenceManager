@@ -1,20 +1,36 @@
 package us.absencemanager.ui.dragonstoneui;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.SwingUtilities;
 
 
 public class TablePanel extends JScrollPane {
 	private JTable table;
 	private StudentTableModel model;
+	private PopupMenu popup;
 	
 	public TablePanel() {
 		table = new JTable();
 		setViewportView(table);
+		table.addMouseListener(new MouseAdapter() {
+			/* (non-Javadoc)
+			 * @see java.awt.event.MouseAdapter#mousePressed(java.awt.event.MouseEvent)
+			 */
+			@Override
+			public void mousePressed(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON3) {
+					int row = table.rowAtPoint(e.getPoint());
+					table.getSelectionModel().setSelectionInterval(row, row);
+					popup = new PopupMenu();
+					popup.show(table, e.getX(), e.getY());
+				}
+			}
+		});
+		
 	}
 	public void initModel() {
 		model = new StudentTableModel();
