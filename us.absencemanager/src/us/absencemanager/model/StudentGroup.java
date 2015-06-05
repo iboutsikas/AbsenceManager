@@ -31,8 +31,9 @@ class StudentGroupProxy implements Serializable {
 	 * Creates a proxy object from a StudentGroup object.
 	 * @param o The StudentGroup object to be converted.
 	 */
-	public StudentGroupProxy(StudentGroup o) {
+	public StudentGroupProxy(StudentGroup o, int maxID) {
 		dl = DataLayer.getInstance();
+		this.maxID = maxID;
 		this.name = o.getName();
 		this.id = o.getID();
 		this.studentIDs = new ArrayList<String>();
@@ -100,7 +101,7 @@ public class StudentGroup implements Serializable {
 	 */
 	private Object writeReplace() throws java.io.ObjectStreamException
     {
-        return new StudentGroupProxy(this);
+        return new StudentGroupProxy(this, maxID);
     }
 	
 	/**

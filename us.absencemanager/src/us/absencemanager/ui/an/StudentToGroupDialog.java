@@ -31,30 +31,34 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
 import us.absencemanager.controller.Controller;
+import us.absencemanager.exceptions.AlreadyExistsException;
 import us.absencemanager.exceptions.NoDataFoundException;
+import us.absencemanager.model.Student;
 
-public class EditStudDialog extends JDialog{
+public class StudentToGroupDialog extends JDialog{
 
 	private JPanel mainContainer, centerPanel,btnPanel;
 	private JTable studentsTable;
-	private StudentTableModel model;
+	private GroupTableModel model;
 	private Controller cont;
 	private ArrayList<Boolean> booleanList;
-	private EditStudDialog thisFrame;
+	private StudentToGroupDialog thisFrame;
 	private TreeMap<String,Integer> map;
-
+	private JButton proceedBtn;
+	private int groupId;
 	
-	public EditStudDialog(JFrame fr, Controller cont){
+	public StudentToGroupDialog(JFrame fr, Controller cont,int groupId){
 		super(fr);
-
 		this.cont= cont;
 		
+		this.groupId = groupId;
 		mainContainer = (JPanel) this.getContentPane();
 		mainContainer.setLayout(new BorderLayout());
 		
 				
 		
 		this.addComponents();
+		this.addListeners();
 		mainContainer.add(centerPanel, BorderLayout.CENTER);
 		
 		this.setTitle("Edit / View all Students");
@@ -69,36 +73,70 @@ public class EditStudDialog extends JDialog{
 		
 		this.centerPanel = new JPanel();
 		this.centerPanel.setLayout(new BorderLayout());
+		
+		this.proceedBtn = new JButton("Proceed");
+		this.btnPanel = new JPanel();
+		btnPanel.setLayout(new FlowLayout());
+		btnPanel.add(proceedBtn);
+		
+		this.mainContainer.add(btnPanel, BorderLayout.SOUTH);
 		this.createTable();
 	}
 	
 	private void createTable(){
+		ArrayList<Student> temp =new ArrayList<Student>(cont.getStudents());
+		
+		try {
+			temp.removeAll(cont.getStudentsInGroup(groupId));
+		} catch (NoDataFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		this.studentsTable = new JTable();		
 		
-		this.model = new StudentTableModel();
+		this.model = new GroupTableModel();
+		
+		
+		
+		
 		this.studentsTable.setModel(model);
 		try{
-			this.model.setData(cont.getStudents(), getStudentAbsences());
+			this.model.setData(temp);
 		} catch (NullPointerException e){
 			e.printStackTrace();
 		}
 		
 		this.centerPanel.add(new JScrollPane(studentsTable), BorderLayout.CENTER);
 	}
+		
 	
-	public TreeMap<String, Integer> getStudentAbsences(){
-		this.map =new  TreeMap<String , Integer> ();
-		for(int i = 0; i<cont.getStudents().size(); i++){
-			try {
-				this.map.put(cont.getStudents().get(i).getId(), cont.getStudentAbsences(cont.getStudents().get(i).getId()).values().size()) ;
-			} catch (NoDataFoundException e) {
-				// TODO Auto-generated catch block
-				System.out.println(e.getMessage());
-			}
-		}
-		return this.map;
-	}
+	private void addListeners(){
+		proceedBtn.addActionListener(new ActionListener(){
 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				for(int i = 0; i < model.getRowCount(); i++){
+					if((Boolean)model.getValueAt(i, 3) == true){
+						try{
+							cont.addStudentToGroup((String)model.getValueAt(i,0), groupId); 
+							
+						} catch (NoDataFoundException ex) {
+							JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+						} catch (NumberFormatException ex) {
+							JOptionPane.showMessageDialog(null, "Not number", "Error", JOptionPane.ERROR_MESSAGE);
+
+						} catch (AlreadyExistsException ex){
+							JOptionPane.showMessageDialog(null, "Student already in group", "Error", JOptionPane.ERROR_MESSAGE);
+						}
+
+					}
+				}
+				
+			}
+			
+		});
+	}
 	
 	
 

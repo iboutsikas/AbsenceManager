@@ -2,6 +2,7 @@ package us.absencemanager.ui.an;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -12,7 +13,9 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -52,10 +55,6 @@ public class MainWindow extends JFrame{
 	private Controller controller;
 	private AddUnitDialog addUnitDlg;
 	private AddGroupDialog addGroupDlg;
-	private AddStudDialog addStudDlg;
-	private AbsenceDialog addAbsDlg;
-	private EditStudDialog editStudDlg;
-	private GroupDialog viewGroupsDlg;
 	private JLabel footerLb, groupLabel, unitLabel, classLabel, dateLb, timeLb;
 	private JComboBox dropDownGroup, dropDownUnit;
 	private JTextField classTxt;
@@ -65,7 +64,7 @@ public class MainWindow extends JFrame{
 	private JButton proceedBtn;
 	private JMenuBar menuBar;
 	private JMenu menuUnit,menuStudents,menuGroupOfStudents,menuAbsences,menuHelp;
-	private JMenuItem unitAdd,studentsAdd,studentsEdit,studentsRemove,groupOfStudentsAdd,groupOfStudentsEdit,groupOfStudentsRemove,absencesAdd,absencesEdit,absencesRemove,absencesLoad,helpGetHelp;
+	private JMenuItem unitAdd,studentsAdd,studentsEdit,groupOfStudentsAdd,groupOfStudentsEdit,absencesAdd,helpGetHelp;
 	private JPanel mainContainer, btnContainer, footerContainer, centerContainer, centerPanel;
 	private GridBagConstraints cons;
 	private GridBagLayout gridBag;
@@ -220,13 +219,13 @@ public class MainWindow extends JFrame{
 		
 		this.studentsAdd=new JMenuItem("Add Student");
 		this.studentsEdit=new JMenuItem("View All Students");
-		this.studentsRemove=new JMenuItem("Remove Students");
+
 		
 		this.groupOfStudentsAdd=new JMenuItem("Add group of students");
 		this.groupOfStudentsEdit=new JMenuItem("View group of students");
 		
 		this.absencesAdd=new JMenuItem("Add Absences");
-		this.absencesEdit=new JMenuItem("View Absences");
+
 		
 		this.helpGetHelp = new JMenuItem("Get Help");
 		
@@ -253,7 +252,6 @@ public class MainWindow extends JFrame{
 
 		//Add items in menu Absences
 		this.menuAbsences.add(absencesAdd);
-		this.menuAbsences.add(absencesEdit);
 		
 		//Add items in menu Help
 		this.menuHelp.add(helpGetHelp);
@@ -312,10 +310,25 @@ public class MainWindow extends JFrame{
 	
 	private void addListeners(JFrame thisFrame){
 		
+		helpGetHelp.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				File htmlFile = new File("c:/Users/Thanasis/Desktop/overview-tree.html");
+				try {
+					Desktop.getDesktop().browse(htmlFile.toURI());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					System.out.println(e.getMessage());
+				}
+			}
+			
+		});
+		
 		studentsAdd.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				addStudDlg = new AddStudDialog(thisFrame, controller);
+				new AddStudDialog(thisFrame, controller);
 			}
 			
 		});
@@ -336,19 +349,19 @@ public class MainWindow extends JFrame{
 						unit = controller.getUnits().get(i).getId();
 					}
 				}
-				
+				System.out.println(classTxt.getText());
 				if(groupId == -1){
 					JOptionPane.showMessageDialog(null, "Select or create a group of students.", "Error in reading group", JOptionPane.ERROR_MESSAGE);
 				}
 				else if(unit == null){
 					JOptionPane.showMessageDialog(null, "Select or create a unit.", "Error in reading unit", JOptionPane.ERROR_MESSAGE);
 				}
-				else if(classroom == null || classroom == ""){
+				else if( classTxt.getText().isEmpty()){
 					JOptionPane.showMessageDialog(null, "Select a classroom.", "Error in reading classroom", JOptionPane.ERROR_MESSAGE);
 				}
 				else{
 					System.out.println(dateTime);
-					addAbsDlg = new AbsenceDialog(thisFrame, controller, groupId, unit, dateTime,classroom);					
+					new AbsenceDialog(thisFrame, controller, groupId, unit, dateTime,classroom);					
 				}
 
 			}
@@ -381,7 +394,7 @@ public class MainWindow extends JFrame{
 					public void actionPerformed(ActionEvent arg0) {
 						
 						System.out.println(dropDown.getSelectedItem().toString());
-						viewGroupsDlg = new GroupDialog(thisFrame,controller,dropDown.getSelectedItem().toString());
+						new GroupDialog(thisFrame,controller,dropDown.getSelectedItem().toString());
 						groupPicker.dispose();
 					}
 					
@@ -421,7 +434,7 @@ public class MainWindow extends JFrame{
 				}
 				else{
 					System.out.println(dateTime);
-					addAbsDlg = new AbsenceDialog(thisFrame, controller, groupId, unit, dateTime,classroom);					
+					new AbsenceDialog(thisFrame, controller, groupId, unit, dateTime,classroom);					
 				}
 
 			}
@@ -454,10 +467,21 @@ public class MainWindow extends JFrame{
 			public void actionPerformed(ActionEvent arg0) {
 				addGroupDlg = new AddGroupDialog(thisFrame, controller);
 				
+				addGroupDlg.addWindowListener(new WindowAdapter(){
+		            @Override
+		            public void windowClosing(WindowEvent e)
+		            {
+		            	modelU.removeAllElements();
+		            	modelG.removeAllElements();
+		            	loadDropDownLists();
+		            }
+				});
+				
 			}
 			
 		});
 		
+
 
 		
 		studentsEdit.addActionListener(new ActionListener(){
@@ -466,7 +490,7 @@ public class MainWindow extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				editStudDlg = new EditStudDialog(thisFrame, controller);
+				new EditStudDialog(thisFrame, controller);
 				
 			}
 			

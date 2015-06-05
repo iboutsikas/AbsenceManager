@@ -120,8 +120,11 @@ public class AddGroupDialog extends JDialog{
 				}	
 
 				for(int i = 0; i < cont.getStudentGroups().size(); i++){
-					if(cont.getStudentGroups().get(i).getName() == titleTxt.getText()){
+					System.out.println("searching: "+titleTxt.getText()+", "+ cont.getStudentGroups().get(i).getName());
+					if(cont.getStudentGroups().get(i).getName().equalsIgnoreCase(titleTxt.getText())){
+						
 						groupId = cont.getStudentGroups().get(i).getID();
+						System.out.println("found match "+titleTxt.getText()+" "+ cont.getStudentGroups().get(i).getName());
 					}
 				}
 				
@@ -131,7 +134,7 @@ public class AddGroupDialog extends JDialog{
 							cont.addStudentToGroup((String)model.getValueAt(i,0), groupId); 
 							counter++;
 						} catch (NoDataFoundException e) {
-							JOptionPane.showMessageDialog(null, "Unable to add student", "Error", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 						} catch (NumberFormatException e) {
 							JOptionPane.showMessageDialog(null, "Not number", "Error", JOptionPane.ERROR_MESSAGE);
 
