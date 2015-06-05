@@ -12,10 +12,11 @@ import java.util.stream.Collectors;
 
 import us.absencemanager.exceptions.AlreadyExistsException;
 import us.absencemanager.exceptions.NoDataFoundException;
-/**
- * A proxy class to be serialized in place of a StudentGroup object.
- * @author Ioannis Boutsikas
- */
+ /**
+  * A proxy class to be serialized in place of a StudentGroup object.
+  * @author Ioannis Boutsikas
+  * @author Nikolaos Doumpalas
+  */
 class StudentGroupProxy implements Serializable {
 	/**
 	 * 

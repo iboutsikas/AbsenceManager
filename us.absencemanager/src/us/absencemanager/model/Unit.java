@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * Represents a unit with a specific ID, name, and the maximum allowed absences
  * @author Ioannis Boutsikas
- *
+ * @author Nikolaos Doumpalas
  */
 public class Unit implements Serializable{
 	

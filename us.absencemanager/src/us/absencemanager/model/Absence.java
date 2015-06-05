@@ -5,7 +5,8 @@ import java.io.Serializable;
 
 /**
  * The Absence class, represents a specific Absence, with unit ID, classroom, and date.
- * @author Zinadore
+ * @author Ioannis Boutsikas
+ * @author Nikolaos Doumpalas
  */
 
 public class Absence implements Serializable {	

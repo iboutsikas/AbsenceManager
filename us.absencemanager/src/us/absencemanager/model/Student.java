@@ -11,7 +11,7 @@ import java.util.TreeMap;
 /**
  * Student represents a Student with specific ID, name, email and a collection of Absences.
  * @author Ioannis Boutsikas
- *
+ * @author Nikolaos Doumpalas
  */
 public class Student implements Serializable{	
 	/**
