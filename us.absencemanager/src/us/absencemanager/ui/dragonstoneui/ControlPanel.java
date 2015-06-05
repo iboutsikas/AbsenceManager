@@ -137,7 +137,11 @@ public class ControlPanel extends JPanel {
 		unitModel = new UnitComboModel();
 		unitModel.setData(unitList);
 		unitSelectionBox = new JComboBox(unitModel);
-		unitSelectionBox.setSelectedIndex(0);
+		if(unitSelectionBox.getItemCount() != 0) {
+			unitSelectionBox.setSelectedIndex(0);
+		} else {
+			unitSelectionBox.setSelectedIndex(-1);
+		}
 		unitSelectionLabel = new JLabel("Select unit:");
 		classroomText = new JTextField(5);
 		Dimension dim = classroomText.getPreferredSize();
@@ -178,6 +182,10 @@ public class ControlPanel extends JPanel {
 	
 	public void refreshGroups(List groupList) {
 		groupModel.setData(groupList);
+//		groupSelectionBox.revalidate();
+//		groupSelectionBox.repaint();
+//		this.revalidate();
+//		this.repaint();
 	}
 	
 	public ControlPanelInfo getPanelInfo() {

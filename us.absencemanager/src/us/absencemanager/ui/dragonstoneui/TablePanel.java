@@ -29,6 +29,10 @@ public class TablePanel extends JScrollPane {
 		model.fireTableDataChanged();
 	}
 	
+	public void refresh(int row) {
+		model.removeBoolean(row);
+		model.fireTableDataChanged();
+	}
 	public String getSelectedStudent() throws IllegalStateException {
 		try {
 			return model.getValueAt(table.getSelectedRow(), 0).toString();
@@ -39,5 +43,8 @@ public class TablePanel extends JScrollPane {
 	
 	public void setModelListener(AdditionListener listener) {
 		model.setModelListener(listener);
+	}
+	public int getSelectedRow() {
+		return table.getSelectedRow();
 	}
 }

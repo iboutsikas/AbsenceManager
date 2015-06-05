@@ -26,26 +26,16 @@ public class MainFrame extends JFrame implements AdditionListener {
 	public MainFrame() {
 		try {
 			c.loadAll();
-		} catch (Exception e) {
+		} catch (ClassNotFoundException e1) {
+			e1.printStackTrace();
+		} catch (IOException e1) {
 			String groupName = JOptionPane.showInputDialog(MainFrame.this, "We detected that you have no files saved.\n Please provide a name for your first group!", "Fresh install", JOptionPane.INFORMATION_MESSAGE);
 			try {
 				c.addStudentGroup(groupName);
-				c.saveAll("");
-				c.loadAll();
-			} catch (AlreadyExistsException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			} catch (AlreadyExistsException e) {
+				e.printStackTrace();
 			}
 		}
-		
-		
-		
 		
 		menuBar = new MenuBar();
 		controlPanel = new ControlPanel(c.getStudentGroups(), c.getUnits());
@@ -99,10 +89,12 @@ public class MainFrame extends JFrame implements AdditionListener {
 			StudentEvent s = (StudentEvent)ev;
 			try {
 				c.addStudent(s.getId(), s.getfName(), s.getlName(), s.getEmail());
+				eStPanel.populateList(c.getStudents());
 				if(s.getAdd()) {
 					try {
-						c.addStudentToGroup(s.getId(), 1);
+						c.addStudentToGroup(s.getId(), currentGroupId);
 						tablePanel.refresh();
+						eStPanel.populateList(c.getStudents(), c.getStudentsInGroup(currentGroupId));
 					} catch (Exception e) {
 						JOptionPane.showMessageDialog(MainFrame.this, "There is no group to add the student", "Error", JOptionPane.ERROR_MESSAGE);
 					}
@@ -156,8 +148,9 @@ public class MainFrame extends JFrame implements AdditionListener {
 	public void removeFromGroupEvent() {
 		try {
 			String sId = tablePanel.getSelectedStudent();
+			int row = tablePanel.getSelectedRow();
 			c.removeStudentFromGroup(sId, currentGroupId);
-			tablePanel.refresh();
+			tablePanel.refresh(row);
 			eStPanel.populateList(c.getStudents(), c.getStudentsInGroup(currentGroupId));
 		} catch (NoDataFoundException e) {
 			e.printStackTrace();

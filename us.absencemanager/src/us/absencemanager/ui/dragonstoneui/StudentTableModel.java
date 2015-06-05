@@ -116,4 +116,8 @@ public class StudentTableModel extends AbstractTableModel {
 	public void setModelListener(AdditionListener listener) {
 		this.listener = listener;
 	}
+	
+	public void removeBoolean(int row) {
+		bools.remove(row);
+	}
 }

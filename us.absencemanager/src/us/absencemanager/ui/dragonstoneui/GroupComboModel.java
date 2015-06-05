@@ -1,5 +1,6 @@
 package us.absencemanager.ui.dragonstoneui;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
@@ -31,6 +32,7 @@ public class GroupComboModel extends AbstractListModel implements ComboBoxModel 
 
 	public void setData(List list) {
 		this.list = list;
+		fireContentsChanged(this, 0, getSize());
 	}
 	
 	public int getSelectedId() {

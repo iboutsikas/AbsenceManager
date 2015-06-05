@@ -95,6 +95,17 @@ public class Controller {
 		ArrayList<Student> temp = sg.getStudents();	
 		return Collections.unmodifiableList(temp);
 	}
+	public void saveGroups(String filePath) throws IOException {
+		dl.saveStudentGroups(new File(filePath+"studentGroups.dat"));
+	}
+	
+	public void saveStudents(String filePath) throws IOException {
+		dl.saveStudents(new File(filePath+"students.dat"));
+	}
+	
+	public void saveUnit(String filePath) throws IOException {
+		dl.saveUnits(new File(filePath+"units.dat"));
+	}
 	
 	public void saveAll(String filePath) throws IOException {
 		dl.saveStudents(new File(filePath+"students.dat"));
@@ -105,6 +116,18 @@ public class Controller {
 	public void loadAll() throws IOException, ClassNotFoundException {
 		dl.loadStudents(new File("students.dat"));
 		dl.loadStudentGroups(new File("studentGroups.dat"));
+		dl.loadUnits(new File("units.dat"));
+	}
+	
+	public void loadGroups() throws ClassNotFoundException, IOException {
+		dl.loadStudentGroups(new File("studentGroups.dat"));
+	}
+	
+	public void loadStudents() throws ClassNotFoundException, IOException {
+		dl.loadStudents(new File("students.dat"));
+	}
+	
+	public void loadUnits() throws ClassNotFoundException, IOException {
 		dl.loadUnits(new File("units.dat"));
 	}
 }
