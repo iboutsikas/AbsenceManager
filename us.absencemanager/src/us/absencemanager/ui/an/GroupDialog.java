@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 
 import us.absencemanager.controller.Controller;
 
@@ -15,12 +16,15 @@ public class GroupDialog extends JDialog{
 	private JPanel mainContainer, btnPanel;
 	private JButton proceedBtn;
 	private Controller cont;
+	private String groupName;
+	private JTable groupTable;
+	private StudentTableModel model;
 	
-	public GroupDialog(JFrame fr, Controller cont){
+	public GroupDialog(JFrame fr, Controller cont, String groupName){
 		super(fr);
 		
 		this.cont = cont;
-		
+		this.groupName = groupName;
 		mainContainer = (JPanel) this.getContentPane();
 		mainContainer.setLayout(new BorderLayout());
 		
@@ -28,7 +32,7 @@ public class GroupDialog extends JDialog{
 		btnPanel = new JPanel();
 		btnPanel.setLayout(new FlowLayout());
 		
-		proceedBtn = new JButton("Proceed");
+		proceedBtn = new JButton("RemoveStudents");
 		btnPanel.add(proceedBtn);
 		
 		this.addComponents();
@@ -42,6 +46,11 @@ public class GroupDialog extends JDialog{
 	}
 	
 	private void addComponents(){
+		model = new StudentTableModel();
+		groupTable = new JTable();
+		groupTable.setModel(model);
+		int groupId = -1;
+		
 		
 	}
 }

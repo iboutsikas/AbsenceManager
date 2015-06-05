@@ -182,7 +182,7 @@ public class DataLayer {
 		if (!studentGroups.contains(sg)) {
 			studentGroups.add(sg);
 		} else {
-			throw new AlreadyExistsException("Student group already exists!");
+			throw new AlreadyExistsException("Student group already exists!"+sg.getID());
 		}
 	}
 

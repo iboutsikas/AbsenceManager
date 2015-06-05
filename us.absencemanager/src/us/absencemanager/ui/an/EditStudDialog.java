@@ -11,9 +11,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.swing.JApplet;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -32,14 +35,13 @@ import us.absencemanager.exceptions.NoDataFoundException;
 
 public class EditStudDialog extends JDialog{
 
-	private JPanel mainContainer, centerPanel, btnPanel;
-	private JButton viewBtn, deleteBtn;
+	private JPanel mainContainer, centerPanel;
 	private JTable studentsTable;
 	private StudentTableModel model;
 	private Controller cont;
 	private ArrayList<Boolean> booleanList;
-	private JPopupMenu popUp;
 	private EditStudDialog thisFrame;
+	private TreeMap<String,Integer> map;
 	
 	public EditStudDialog(JFrame fr, Controller cont){
 		super(fr);
@@ -49,16 +51,13 @@ public class EditStudDialog extends JDialog{
 		mainContainer = (JPanel) this.getContentPane();
 		mainContainer.setLayout(new BorderLayout());
 		
-		//BUTTON CONTAINER
-		btnPanel = new JPanel();
-		btnPanel.setLayout(new FlowLayout());
 				
 		
 		this.addComponents();
 		this.addListeners();
-		mainContainer.add(btnPanel, BorderLayout.SOUTH);
 		mainContainer.add(centerPanel, BorderLayout.CENTER);
 		
+		this.setTitle("Edit / View all Students");
 		this.setVisible(true);
 		this.setLocationRelativeTo(null);
 		this.pack();
@@ -66,11 +65,7 @@ public class EditStudDialog extends JDialog{
 	}
 	
 	private void addComponents(){
-		this.viewBtn = new JButton("View Absence information");
-		this.btnPanel.add(viewBtn);
 		
-		this.deleteBtn = new JButton("Delete Student(s)");
-		this.btnPanel.add(deleteBtn);
 		
 		this.centerPanel = new JPanel();
 		this.centerPanel.setLayout(new BorderLayout());
@@ -83,7 +78,7 @@ public class EditStudDialog extends JDialog{
 		this.model = new StudentTableModel();
 		this.studentsTable.setModel(model);
 		try{
-			this.model.setData(cont.getStudents());
+			this.model.setData(cont.getStudents(), getStudentAbsences());
 		} catch (NullPointerException e){
 			e.printStackTrace();
 		}
@@ -91,34 +86,21 @@ public class EditStudDialog extends JDialog{
 		this.centerPanel.add(new JScrollPane(studentsTable), BorderLayout.CENTER);
 	}
 	
+	public TreeMap<String, Integer> getStudentAbsences(){
+		this.map =new  TreeMap<String , Integer> ();
+		for(int i = 0; i<cont.getStudents().size(); i++){
+			try {
+				this.map.put(cont.getStudents().get(i).getId(), cont.getStudentAbsences(cont.getStudents().get(i).getId()).values().size()) ;
+			} catch (NoDataFoundException e) {
+				// TODO Auto-generated catch block
+				System.out.println(e.getMessage());
+			}
+		}
+		return this.map;
+	}
+	
+	
 	private void addListeners(){
-			viewBtn.addActionListener(new ActionListener(){
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					int size=-1;
-					size = model.getRowCount();
-					booleanList = new ArrayList<Boolean>();
-					
-					for(int i = 0; i<size; i++){
-						booleanList.add((Boolean) model.getValueAt(i, 3));
-						if(booleanList.get(i) == true){
-							
-								//cont.getStudents().get(i).								
-							
-			
-						}
-					}
-					
-					int answer = JOptionPane.showConfirmDialog(thisFrame, "Are you sure?", "Closing", JOptionPane.YES_NO_OPTION);
-	                if(answer == JOptionPane.YES_OPTION){
-	                	
-						thisFrame.dispose();
-						
-	                }
-					
-				}
-				
-			});
 	}
 
 }

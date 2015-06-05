@@ -8,16 +8,22 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -25,6 +31,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
@@ -33,6 +40,8 @@ import javax.swing.event.ListDataListener;
 import javax.swing.text.DateFormatter;
 
 import us.absencemanager.controller.Controller;
+import us.absencemanager.exceptions.NoDataFoundException;
+import us.absencemanager.model.Absence;
 
 public class MainWindow extends JFrame{
 
@@ -46,6 +55,7 @@ public class MainWindow extends JFrame{
 	private AddStudDialog addStudDlg;
 	private AbsenceDialog addAbsDlg;
 	private EditStudDialog editStudDlg;
+	private GroupDialog viewGroupsDlg;
 	private JLabel footerLb, groupLabel, unitLabel, classLabel, dateLb, timeLb;
 	private JComboBox dropDownGroup, dropDownUnit;
 	private JTextField classTxt;
@@ -206,20 +216,20 @@ public class MainWindow extends JFrame{
 		this.menuAbsences = new JMenu("Absences");
 		this.menuHelp=new JMenu("Help");
 
+		this.unitAdd = new JMenuItem("Add Unit");
+		
 		this.studentsAdd=new JMenuItem("Add Student");
-
-
 		this.studentsEdit=new JMenuItem("View All Students");
 		this.studentsRemove=new JMenuItem("Remove Students");
+		
 		this.groupOfStudentsAdd=new JMenuItem("Add group of students");
-		this.groupOfStudentsEdit=new JMenuItem("View groups of students");
-		this.groupOfStudentsRemove=new JMenuItem("Remove group of students");
+		this.groupOfStudentsEdit=new JMenuItem("View group of students");
+		
 		this.absencesAdd=new JMenuItem("Add Absences");
-
-
 		this.absencesEdit=new JMenuItem("View Absences");
+		
 		this.helpGetHelp = new JMenuItem("Get Help");
-		this.unitAdd = new JMenuItem("Add Unit");
+		
 
 		//Add items in MenuBar
 		this.menuBar.add(menuUnit);
@@ -230,19 +240,21 @@ public class MainWindow extends JFrame{
 
 
 		this.menuUnit.add(unitAdd);
+		
 		//Add items in menu Students
 		this.menuStudents.add(studentsAdd);
 		this.menuStudents.add(studentsEdit);
-		this.menuStudents.add(studentsRemove);
+		
 
 		//Add items in menu Group of students
 		this.menuGroupOfStudents.add(groupOfStudentsAdd);
 		this.menuGroupOfStudents.add(groupOfStudentsEdit);
-		this.menuGroupOfStudents.add(groupOfStudentsRemove);
+
 
 		//Add items in menu Absences
 		this.menuAbsences.add(absencesAdd);
 		this.menuAbsences.add(absencesEdit);
+		
 		//Add items in menu Help
 		this.menuHelp.add(helpGetHelp);
 
@@ -311,22 +323,72 @@ public class MainWindow extends JFrame{
 		absencesAdd.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				String unit = null, date = null;
+				String unit = null, classroom = classTxt.getText();
+				String dateTime = new SimpleDateFormat("HH:mm").format(timePicker.getValue()) + " " +new SimpleDateFormat("dd/MM/yy").format(datePicker.getValue());
 				int groupId= -1;
 				for(int i = 0; i<controller.getStudentGroups().size(); i++){
 					if(controller.getStudentGroups().get(i).getName() == ((MainWindow) thisFrame).getSelectedGroup()){
 						groupId = controller.getStudentGroups().get(i).getID();
 					}
 				}
+				for(int i = 0; i<controller.getUnits().size(); i++){
+					if(controller.getUnits().get(i).getName() == ((MainWindow) thisFrame).getSelectedUnit()){
+						unit = controller.getUnits().get(i).getId();
+					}
+				}
+				
 				if(groupId == -1){
 					JOptionPane.showMessageDialog(null, "Select or create a group of students.", "Error in reading group", JOptionPane.ERROR_MESSAGE);
 				}
+				else if(unit == null){
+					JOptionPane.showMessageDialog(null, "Select or create a unit.", "Error in reading unit", JOptionPane.ERROR_MESSAGE);
+				}
+				else if(classroom == null || classroom == ""){
+					JOptionPane.showMessageDialog(null, "Select a classroom.", "Error in reading classroom", JOptionPane.ERROR_MESSAGE);
+				}
 				else{
-					String dateTime = new SimpleDateFormat("HH:mm").format(timePicker.getValue()) + " " +new SimpleDateFormat("dd/MM/yy").format(datePicker.getValue());
 					System.out.println(dateTime);
-					addAbsDlg = new AbsenceDialog(thisFrame, controller, groupId, unit, dateTime,"afd");					
+					addAbsDlg = new AbsenceDialog(thisFrame, controller, groupId, unit, dateTime,classroom);					
 				}
 
+			}
+			
+		});
+		
+		groupOfStudentsEdit.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				JDialog groupPicker = new JDialog(thisFrame);
+				
+				JComboBox dropDown = new JComboBox();
+				for(int i = 0; i < dropDownGroup.getItemCount(); i++){
+					if(i>0){
+						dropDown.addItem(dropDownGroup.getItemAt(i));
+					}
+				}
+				groupPicker.setTitle("Choose Group");
+				groupPicker.setLocationRelativeTo(thisFrame);
+				groupPicker.add(new JScrollPane(dropDown));
+				groupPicker.pack();
+				groupPicker.setVisible(true);
+				
+				dropDown.addActionListener(new ActionListener(){
+
+
+
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						
+						System.out.println(dropDown.getSelectedItem().toString());
+						viewGroupsDlg = new GroupDialog(thisFrame,controller,dropDown.getSelectedItem().toString());
+						groupPicker.dispose();
+					}
+					
+				});
+				
+				
+				
 			}
 			
 		});
@@ -400,6 +462,8 @@ public class MainWindow extends JFrame{
 		
 		studentsEdit.addActionListener(new ActionListener(){
 
+			
+			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				editStudDlg = new EditStudDialog(thisFrame, controller);
@@ -464,6 +528,7 @@ public class MainWindow extends JFrame{
 	private String getSelectedUnit(){
 		return dropDownUnit.getSelectedItem().toString();
 	}
+
 
 
 }
