@@ -30,7 +30,15 @@ public class MainFrame extends JFrame implements AdditionListener {
 			String groupName = JOptionPane.showInputDialog(MainFrame.this, "We detected that you have no files saved.\n Please provide a name for your first group!", "Fresh install", JOptionPane.INFORMATION_MESSAGE);
 			try {
 				c.addStudentGroup(groupName);
+				c.saveAll("");
+				c.loadAll();
 			} catch (AlreadyExistsException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (ClassNotFoundException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
