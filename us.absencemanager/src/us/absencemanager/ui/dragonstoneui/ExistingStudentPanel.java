@@ -67,6 +67,8 @@ public class ExistingStudentPanel extends JPanel {
 					popupListener.deleteStudentEvent(s.getId());
 				} catch (NoDataFoundException e1) {
 					JOptionPane.showMessageDialog(ExistingStudentPanel.this, "There was an error while deleting this student", "Error", JOptionPane.ERROR_MESSAGE);
+				} catch (NullPointerException e1) {
+					JOptionPane.showMessageDialog(ExistingStudentPanel.this, "There are no students loaded", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -79,6 +81,8 @@ public class ExistingStudentPanel extends JPanel {
 					popupListener.displayAbsencesEvent(s.getId());
 				} catch (NoDataFoundException e1) {
 					JOptionPane.showMessageDialog(ExistingStudentPanel.this, "There was an error while displaying the absences this student", "Error", JOptionPane.ERROR_MESSAGE);
+				} catch (NullPointerException e1) {
+					JOptionPane.showMessageDialog(ExistingStudentPanel.this, "There are no students loaded", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});

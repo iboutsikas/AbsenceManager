@@ -37,6 +37,7 @@ public class NewGroupDialog extends JDialog {
 				
 				GroupEvent ge = new GroupEvent(this, name);
 				listener.additionEventRaised(ge);
+				NewGroupDialog.this.dispose();
 			}
 		});
 		
