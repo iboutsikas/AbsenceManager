@@ -13,7 +13,11 @@ import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-
+/**
+ * 
+ * @author Ioannis Boutsikas
+ *
+ */
 public class NewStudentDialog extends JDialog {
 	private JLabel idLabel;
 	private JLabel firstNameLabel;

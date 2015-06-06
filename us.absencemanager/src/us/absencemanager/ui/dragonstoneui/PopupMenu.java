@@ -5,7 +5,11 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-
+/**
+ * 
+ * @author Ioannis Boutsikas
+ *
+ */
 public class PopupMenu extends JPopupMenu {
 	private JMenuItem deleteStudent;
 	private JMenuItem displayAbsences;

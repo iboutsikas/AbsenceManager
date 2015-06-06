@@ -27,7 +27,11 @@ import javax.swing.border.Border;
 import javax.swing.text.DateFormatter;
 
 import us.absencemanager.exceptions.InvalidOperationsException;
-
+/**
+ * 
+ * @author Ioannis Boutsikas
+ *
+ */
 @SuppressWarnings({"serial","rawtypes"})
 public class ControlPanel extends JPanel {
 	private JComboBox groupSelectionBox;

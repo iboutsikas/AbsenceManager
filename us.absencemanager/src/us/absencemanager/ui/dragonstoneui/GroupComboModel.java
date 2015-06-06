@@ -8,7 +8,11 @@ import javax.swing.ComboBoxModel;
 
 import us.absencemanager.exceptions.InvalidOperationsException;
 import us.absencemanager.model.StudentGroup;
-
+/**
+ * 
+ * @author Ioannis Boutsikas
+ *
+ */
 public class GroupComboModel extends AbstractListModel implements ComboBoxModel {
 	List<StudentGroup> list;
 	StudentGroup selection;

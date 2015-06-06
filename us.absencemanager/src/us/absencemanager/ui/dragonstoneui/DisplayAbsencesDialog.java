@@ -23,7 +23,11 @@ import us.absencemanager.controller.Controller;
 import us.absencemanager.exceptions.NoDataFoundException;
 import us.absencemanager.model.Absence;
 import us.absencemanager.model.Unit;
-
+/**
+ * 
+ * @author Ioannis Boutsikas
+ *
+ */
 public class DisplayAbsencesDialog extends JDialog {
 	private Controller c;
 	private JTree absenceTree;

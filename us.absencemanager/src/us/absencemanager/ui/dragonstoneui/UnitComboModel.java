@@ -10,6 +10,11 @@ import javax.swing.SwingUtilities;
 import us.absencemanager.exceptions.InvalidOperationsException;
 import us.absencemanager.model.Unit;
 
+/**
+ * 
+ * @author Ioannis Boutsikas
+ *
+ */
 public class UnitComboModel extends AbstractListModel implements ComboBoxModel {
 	List<Unit> list;
 	Unit selection;

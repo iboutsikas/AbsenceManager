@@ -1,5 +1,10 @@
 package us.absencemanager.ui.dragonstoneui;
 
+/**
+ * 
+ * @author Ioannis Boutsikas
+ *
+ */
 public class UnitEvent extends CustomEvent {
 	String id;
 	String name;

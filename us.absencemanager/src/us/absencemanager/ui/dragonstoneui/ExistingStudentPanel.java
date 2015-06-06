@@ -24,7 +24,11 @@ import javax.swing.border.Border;
 
 import us.absencemanager.exceptions.NoDataFoundException;
 import us.absencemanager.model.Student;
-
+/**
+ * 
+ * @author Ioannis Boutsikas
+ *
+ */
 public class ExistingStudentPanel extends JPanel {
 	private JList studentList;
 	private DefaultListModel model;

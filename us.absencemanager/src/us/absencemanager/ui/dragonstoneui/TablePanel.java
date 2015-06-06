@@ -15,7 +15,11 @@ import javax.swing.JTable;
 import us.absencemanager.exceptions.NoDataFoundException;
 import us.absencemanager.model.Student;
 
-
+/**
+ * 
+ * @author Ioannis Boutsikas
+ *
+ */
 public class TablePanel extends JScrollPane {
 	private JTable table;
 	private StudentTableModel model;

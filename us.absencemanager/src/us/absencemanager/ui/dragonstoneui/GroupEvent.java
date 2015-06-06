@@ -1,5 +1,9 @@
 package us.absencemanager.ui.dragonstoneui;
-
+/**
+ * 
+ * @author Ioannis Boutsikas
+ *
+ */
 public class GroupEvent extends CustomEvent {
 	String name;
 	public GroupEvent(Object source) {

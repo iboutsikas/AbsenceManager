@@ -6,7 +6,11 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 import us.absencemanager.model.Student;
-
+/**
+ * 
+ * @author Ioannis Boutsikas
+ *
+ */
 public class StudentTableModel extends AbstractTableModel {
 	private List<Student> list;
 	private List<Boolean> bools;

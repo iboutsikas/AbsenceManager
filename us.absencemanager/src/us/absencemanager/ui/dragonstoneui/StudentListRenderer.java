@@ -10,7 +10,11 @@ import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 
 import us.absencemanager.model.Student;
-
+/**
+ * 
+ * @author Ioannis Boutsikas
+ *
+ */
 @SuppressWarnings("rawtypes")
 public class StudentListRenderer implements ListCellRenderer {
 	private JPanel panel;

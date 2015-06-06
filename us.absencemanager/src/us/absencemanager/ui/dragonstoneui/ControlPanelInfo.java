@@ -1,5 +1,9 @@
 package us.absencemanager.ui.dragonstoneui;
-
+/**
+ * 
+ * @author Ioannis Boutsikas
+ *
+ */
 public class ControlPanelInfo {
 	private int groupId;
 	private String unitId;

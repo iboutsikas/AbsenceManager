@@ -1,4 +1,4 @@
-package us.absencemanager;
+package us.absencemanager.tests;
 
 import java.io.IOException;
 import java.util.ArrayList;

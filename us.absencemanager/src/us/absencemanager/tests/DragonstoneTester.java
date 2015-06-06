@@ -1,4 +1,4 @@
-package us.absencemanager;
+package us.absencemanager.tests;
 
 import us.absencemanager.ui.dragonstoneui.MainFrame;
 

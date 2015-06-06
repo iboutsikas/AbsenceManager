@@ -3,6 +3,8 @@ package us.absencemanager.ui.dragonstoneui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 
 import javax.swing.JFrame;
@@ -13,7 +15,11 @@ import us.absencemanager.controller.Controller;
 import us.absencemanager.exceptions.AlreadyExistsException;
 import us.absencemanager.exceptions.NoDataFoundException;
 
-
+/**
+ * 
+ * @author Ioannis Boutsikas
+ *
+ */
 public class MainFrame extends JFrame implements AdditionListener, PopupListener {
 	private Controller c = Controller.getInstance();
 	private ControlPanel controlPanel;
@@ -112,6 +118,20 @@ public class MainFrame extends JFrame implements AdditionListener, PopupListener
 		add(leftPane, BorderLayout.WEST);
 		add(tablePanel, BorderLayout.CENTER);
 		
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				int answer = JOptionPane.showConfirmDialog(MainFrame.this, "Do you want to save your changes before closing", "Closing", JOptionPane.YES_NO_OPTION);
+                if(answer == JOptionPane.YES_OPTION){
+                	try {
+						c.saveAll("");
+					} catch (IOException e1) {
+						JOptionPane.showMessageDialog(null, "An error occured while saving", "Saving error", JOptionPane.ERROR_MESSAGE);
+					}
+                } else {
+                	MainFrame.this.dispose();
+                }
+			}
+		});
 		setTitle("Absence Manager");
 		Dimension dim = new Dimension(1000, 600);
 		setPreferredSize(dim);

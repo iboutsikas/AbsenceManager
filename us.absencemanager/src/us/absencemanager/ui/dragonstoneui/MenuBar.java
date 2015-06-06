@@ -2,12 +2,18 @@ package us.absencemanager.ui.dragonstoneui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.SwingUtilities;
-
+/**
+ * 
+ * @author Ioannis Boutsikas
+ *
+ */
 @SuppressWarnings("serial")
 public class MenuBar extends JMenuBar {
 	private JMenu fileMenu;
@@ -67,6 +73,14 @@ public class MenuBar extends JMenuBar {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				listener.saveEventRaised();
+			}
+		});
+		exitMenuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				for(WindowListener l: SwingUtilities.getWindowAncestor(MenuBar.this).getWindowListeners()) {
+					l.windowClosing(new WindowEvent(SwingUtilities.getWindowAncestor(MenuBar.this), WindowEvent.WINDOW_CLOSING));
+				}
 			}
 		});
 	}

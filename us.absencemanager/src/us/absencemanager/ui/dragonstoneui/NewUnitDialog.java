@@ -14,7 +14,11 @@ import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
-
+/**
+ * 
+ * @author Ioannis Boutsikas
+ *
+ */
 public class NewUnitDialog extends JDialog {
 	private JLabel idLabel;
 	private JTextField idText;

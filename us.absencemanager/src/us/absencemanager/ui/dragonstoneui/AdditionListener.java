@@ -1,6 +1,11 @@
 package us.absencemanager.ui.dragonstoneui;
 
 import java.util.EventListener;
+/**
+ * 
+ * @author Ioannis Boutsikas
+ *
+ */
 
 public interface AdditionListener extends EventListener {
 	public void additionEventRaised(CustomEvent ev);
