@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,12 +14,15 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
+import us.absencemanager.exceptions.NoDataFoundException;
 import us.absencemanager.model.Student;
 
 public class ExistingStudentPanel extends JPanel {
@@ -29,6 +34,10 @@ public class ExistingStudentPanel extends JPanel {
 	private JPanel buttonPanel;
 	private JScrollPane listPane;
 	private AdditionListener listener;	
+	private JPopupMenu popup;
+	private PopupListener popupListener;
+	private JMenuItem deleteStudent;
+	private JMenuItem displayAbsences;
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public ExistingStudentPanel() {
@@ -44,7 +53,52 @@ public class ExistingStudentPanel extends JPanel {
 		addToGroupButton.setPreferredSize(dim);
 		removeFromGroupButton.setPreferredSize(dim);
 		buttonPanel = new JPanel(new GridLayout(3,1));
+		popup = new JPopupMenu();
+		deleteStudent = new JMenuItem("Delete student");
+		displayAbsences = new JMenuItem("Display absences...");
+		popup.add(deleteStudent);
+		popup.add(displayAbsences);
 		
+		deleteStudent.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Student s = (Student) studentList.getSelectedValue();
+				try {
+					popupListener.deleteStudentEvent(s.getId());
+				} catch (NoDataFoundException e1) {
+					JOptionPane.showMessageDialog(ExistingStudentPanel.this, "There was an error while deleting this student", "Error", JOptionPane.ERROR_MESSAGE);
+				} catch (NullPointerException e1) {
+					JOptionPane.showMessageDialog(ExistingStudentPanel.this, "There are no students loaded", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		
+		displayAbsences.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Student s = (Student) studentList.getSelectedValue();
+				try {
+					popupListener.displayAbsencesEvent(s.getId());
+				} catch (NoDataFoundException e1) {
+					JOptionPane.showMessageDialog(ExistingStudentPanel.this, "There was an error while displaying the absences this student", "Error", JOptionPane.ERROR_MESSAGE);
+				} catch (NullPointerException e1) {
+					JOptionPane.showMessageDialog(ExistingStudentPanel.this, "There are no students loaded", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		studentList.addMouseListener(new MouseAdapter() {
+			/* (non-Javadoc)
+			 * @see java.awt.event.MouseAdapter#mousePressed(java.awt.event.MouseEvent)
+			 */
+			@Override
+			public void mousePressed(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON3) {
+					int selection = studentList.locationToIndex(e.getPoint());
+					studentList.setSelectedIndex(selection);
+					popup.show(studentList, e.getX(), e.getY());
+				}
+			}
+		});
 		addToGroupButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -102,5 +156,9 @@ public class ExistingStudentPanel extends JPanel {
 	}
 	public void setAdditionListener(AdditionListener listener) {
 		this.listener = listener;				
+	}
+	
+	public void setPopupListener(PopupListener listener) {
+		this.popupListener = listener;
 	}
 }

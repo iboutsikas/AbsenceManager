@@ -1,4 +1,4 @@
-package us.absencemanager.ui.ad;
+package us.absencemanager.ui.an;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,9 +7,17 @@ import javax.swing.table.AbstractTableModel;
 
 import us.absencemanager.model.Student;
 
-public class AbsenceTableModel extends AbstractTableModel {
+/**
+ * @authors Athanasios Doulgeris , Nikolaos Doumpalas
+ *
+ */
+public class GroupTableModel extends AbstractTableModel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1118508717410462106L;
 	private List<Student> list;
-	private String[] columnNames = new String[]{"ID", "First Name", "Last Name", " Is Present"};
+	private String[] columnNames = new String[]{"ID", "First Name", "Last Name", " Select"};
 	private List<Boolean> boolList;
 
 	

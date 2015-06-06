@@ -1,4 +1,3 @@
-
 package us.absencemanager.exceptions;
 
 @SuppressWarnings("serial")

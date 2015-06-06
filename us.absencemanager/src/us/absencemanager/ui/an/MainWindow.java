@@ -1,7 +1,8 @@
-package us.absencemanager.ui.ad;
+package us.absencemanager.ui.an;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -10,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -18,6 +20,7 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -25,15 +28,18 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
 import javax.swing.text.DateFormatter;
 
 import us.absencemanager.controller.Controller;
 
+/**
+ * @authors Athanasios Doulgeris , Nikolaos Doumpalas
+ *
+ */
 public class MainWindow extends JFrame{
 
 	/**
@@ -43,10 +49,8 @@ public class MainWindow extends JFrame{
 	private Controller controller;
 	private AddUnitDialog addUnitDlg;
 	private AddGroupDialog addGroupDlg;
-	private AddStudDialog addStudDlg;
-	private AbsenceDialog addAbsDlg;
-	private EditStudDialog editStudDlg;
 	private JLabel footerLb, groupLabel, unitLabel, classLabel, dateLb, timeLb;
+	@SuppressWarnings("rawtypes")
 	private JComboBox dropDownGroup, dropDownUnit;
 	private JTextField classTxt;
 	private Calendar calendar;
@@ -55,13 +59,17 @@ public class MainWindow extends JFrame{
 	private JButton proceedBtn;
 	private JMenuBar menuBar;
 	private JMenu menuUnit,menuStudents,menuGroupOfStudents,menuAbsences,menuHelp;
-	private JMenuItem unitAdd,studentsAdd,studentsEdit,studentsRemove,groupOfStudentsAdd,groupOfStudentsEdit,groupOfStudentsRemove,absencesAdd,absencesEdit,absencesRemove,absencesLoad,helpGetHelp;
+	private JMenuItem unitAdd,studentsAdd,studentsEdit,groupOfStudentsAdd,groupOfStudentsEdit,absencesAdd,helpGetHelp;
 	private JPanel mainContainer, btnContainer, footerContainer, centerContainer, centerPanel;
 	private GridBagConstraints cons;
 	private GridBagLayout gridBag;
+	@SuppressWarnings("rawtypes")
 	private DefaultComboBoxModel modelU, modelG;
 	
 	
+	/**
+	 * 
+	 */
 	public MainWindow(){
 		super();
 		
@@ -90,6 +98,9 @@ public class MainWindow extends JFrame{
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
+	/**
+	 * 
+	 */
 	private void addComponents(){
 		
 		this.centerContainer = new JPanel();
@@ -120,6 +131,9 @@ public class MainWindow extends JFrame{
 		createCenterContainer();
 	}
 	
+	/**
+	 * 
+	 */
 	private void createCenterContainer(){
 		this.centerContainer = new JPanel();
 		
@@ -197,6 +211,9 @@ public class MainWindow extends JFrame{
 		this.mainContainer.add(centerContainer, BorderLayout.CENTER);
 	}
 	
+	/**
+	 * 
+	 */
 	private void addMenu(){
 		//Create the objects
 		this.menuBar = new JMenuBar();
@@ -206,20 +223,20 @@ public class MainWindow extends JFrame{
 		this.menuAbsences = new JMenu("Absences");
 		this.menuHelp=new JMenu("Help");
 
+		this.unitAdd = new JMenuItem("Add Unit");
+		
 		this.studentsAdd=new JMenuItem("Add Student");
-
-
 		this.studentsEdit=new JMenuItem("View All Students");
-		this.studentsRemove=new JMenuItem("Remove Students");
+
+		
 		this.groupOfStudentsAdd=new JMenuItem("Add group of students");
-		this.groupOfStudentsEdit=new JMenuItem("View groups of students");
-		this.groupOfStudentsRemove=new JMenuItem("Remove group of students");
+		this.groupOfStudentsEdit=new JMenuItem("View group of students");
+		
 		this.absencesAdd=new JMenuItem("Add Absences");
 
-
-		this.absencesEdit=new JMenuItem("View Absences");
+		
 		this.helpGetHelp = new JMenuItem("Get Help");
-		this.unitAdd = new JMenuItem("Add Unit");
+		
 
 		//Add items in MenuBar
 		this.menuBar.add(menuUnit);
@@ -230,25 +247,29 @@ public class MainWindow extends JFrame{
 
 
 		this.menuUnit.add(unitAdd);
+		
 		//Add items in menu Students
 		this.menuStudents.add(studentsAdd);
 		this.menuStudents.add(studentsEdit);
-		this.menuStudents.add(studentsRemove);
+		
 
 		//Add items in menu Group of students
 		this.menuGroupOfStudents.add(groupOfStudentsAdd);
 		this.menuGroupOfStudents.add(groupOfStudentsEdit);
-		this.menuGroupOfStudents.add(groupOfStudentsRemove);
+
 
 		//Add items in menu Absences
 		this.menuAbsences.add(absencesAdd);
-		this.menuAbsences.add(absencesEdit);
+		
 		//Add items in menu Help
 		this.menuHelp.add(helpGetHelp);
 
 		this.mainContainer.add(menuBar, BorderLayout.NORTH);
 	}
 	
+	/**
+	 * 
+	 */
 	private void createCalendar(){
 		calendar = Calendar.getInstance();
 		
@@ -261,8 +282,7 @@ public class MainWindow extends JFrame{
 		modelD.setValue(calendar.getTime());
 		
         timePicker = new JSpinner(model);
-        
-        Calendar cal = Calendar.getInstance();
+
         
 		JSpinner.DateEditor editor = new JSpinner.DateEditor(timePicker,"HH:mm");
 	    DateFormatter formatter = (DateFormatter)editor.getTextField().getFormatter();
@@ -298,12 +318,30 @@ public class MainWindow extends JFrame{
 		
 	}
 	
+	/**
+	 * @param thisFrame
+	 */
 	private void addListeners(JFrame thisFrame){
+		
+		helpGetHelp.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				File htmlFile = new File("c:/Users/Thanasis/Desktop/overview-tree.html");
+				try {
+					Desktop.getDesktop().browse(htmlFile.toURI());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					System.out.println(e.getMessage());
+				}
+			}
+			
+		});
 		
 		studentsAdd.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				addStudDlg = new AddStudDialog(thisFrame, controller);
+				new AddStudDialog(thisFrame, controller);
 			}
 			
 		});
@@ -311,22 +349,74 @@ public class MainWindow extends JFrame{
 		absencesAdd.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				String unit = null, date = null;
+				String unit = null, classroom = classTxt.getText();
+				String dateTime = new SimpleDateFormat("HH:mm").format(timePicker.getValue()) + " " +new SimpleDateFormat("dd/MM/yy").format(datePicker.getValue());
 				int groupId= -1;
 				for(int i = 0; i<controller.getStudentGroups().size(); i++){
 					if(controller.getStudentGroups().get(i).getName() == ((MainWindow) thisFrame).getSelectedGroup()){
 						groupId = controller.getStudentGroups().get(i).getID();
 					}
 				}
+				for(int i = 0; i<controller.getUnits().size(); i++){
+					if(controller.getUnits().get(i).getName() == ((MainWindow) thisFrame).getSelectedUnit()){
+						unit = controller.getUnits().get(i).getId();
+					}
+				}
+				System.out.println(classTxt.getText());
 				if(groupId == -1){
 					JOptionPane.showMessageDialog(null, "Select or create a group of students.", "Error in reading group", JOptionPane.ERROR_MESSAGE);
 				}
+				else if(unit == null){
+					JOptionPane.showMessageDialog(null, "Select or create a unit.", "Error in reading unit", JOptionPane.ERROR_MESSAGE);
+				}
+				else if( classTxt.getText().isEmpty()){
+					JOptionPane.showMessageDialog(null, "Select a classroom.", "Error in reading classroom", JOptionPane.ERROR_MESSAGE);
+				}
 				else{
-					String dateTime = new SimpleDateFormat("HH:mm").format(timePicker.getValue()) + " " +new SimpleDateFormat("dd/MM/yy").format(datePicker.getValue());
 					System.out.println(dateTime);
-					addAbsDlg = new AbsenceDialog(thisFrame, controller, groupId, unit, dateTime,"afd");					
+					new AbsenceDialog(thisFrame, controller, groupId, unit, dateTime,classroom);					
 				}
 
+			}
+			
+		});
+		
+		groupOfStudentsEdit.addActionListener(new ActionListener(){
+
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				JDialog groupPicker = new JDialog(thisFrame);
+				
+				@SuppressWarnings("rawtypes")
+				JComboBox dropDown = new JComboBox();
+				for(int i = 0; i < dropDownGroup.getItemCount(); i++){
+					if(i>0){
+						dropDown.addItem(dropDownGroup.getItemAt(i));
+					}
+				}
+				groupPicker.setTitle("Choose Group");
+				groupPicker.setLocationRelativeTo(thisFrame);
+				groupPicker.add(new JScrollPane(dropDown));
+				groupPicker.pack();
+				groupPicker.setVisible(true);
+				
+				dropDown.addActionListener(new ActionListener(){
+
+
+
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						
+						System.out.println(dropDown.getSelectedItem().toString());
+						new GroupDialog(thisFrame,controller,dropDown.getSelectedItem().toString());
+						groupPicker.dispose();
+					}
+					
+				});
+				
+				
+				
 			}
 			
 		});
@@ -359,7 +449,7 @@ public class MainWindow extends JFrame{
 				}
 				else{
 					System.out.println(dateTime);
-					addAbsDlg = new AbsenceDialog(thisFrame, controller, groupId, unit, dateTime,classroom);					
+					new AbsenceDialog(thisFrame, controller, groupId, unit, dateTime,classroom);					
 				}
 
 			}
@@ -392,17 +482,30 @@ public class MainWindow extends JFrame{
 			public void actionPerformed(ActionEvent arg0) {
 				addGroupDlg = new AddGroupDialog(thisFrame, controller);
 				
+				addGroupDlg.addWindowListener(new WindowAdapter(){
+		            @Override
+		            public void windowClosing(WindowEvent e)
+		            {
+		            	modelU.removeAllElements();
+		            	modelG.removeAllElements();
+		            	loadDropDownLists();
+		            }
+				});
+				
 			}
 			
 		});
 		
 
+
 		
 		studentsEdit.addActionListener(new ActionListener(){
 
+			
+			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				editStudDlg = new EditStudDialog(thisFrame, controller);
+				new EditStudDialog(thisFrame, controller);
 				
 			}
 			
@@ -431,6 +534,10 @@ public class MainWindow extends JFrame{
 		
 	}
 	
+	/**
+	 * 
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void loadDropDownLists(){
 		
 		modelG = new DefaultComboBoxModel();
@@ -457,13 +564,20 @@ public class MainWindow extends JFrame{
 		
 	}
 	
+	/**
+	 * @return
+	 */
 	private String getSelectedGroup(){
 		return dropDownGroup.getSelectedItem().toString();
 	}
 	
+	/**
+	 * @return
+	 */
 	private String getSelectedUnit(){
 		return dropDownUnit.getSelectedItem().toString();
 	}
+
 
 
 }

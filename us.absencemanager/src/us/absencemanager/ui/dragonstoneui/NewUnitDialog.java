@@ -13,6 +13,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 
 public class NewUnitDialog extends JDialog {
 	private JLabel idLabel;
@@ -32,7 +33,7 @@ public class NewUnitDialog extends JDialog {
 		nameLabel = new JLabel("Unit Name:");
 		nameText = new JTextField(15);
 		absLabel = new JLabel("Max absences:");
-		absSpinner = new JSpinner();
+		absSpinner = new JSpinner(new SpinnerNumberModel(0, 0, 99, 1));
 		addButton = new JButton("Add");
 		cancelButton = new JButton("Cancel");
 		Dimension dim = cancelButton.getPreferredSize();
@@ -46,6 +47,7 @@ public class NewUnitDialog extends JDialog {
 				int abs = (int)absSpinner.getValue();
 				UnitEvent ue = new UnitEvent(this, id, name, abs);
 				listener.additionEventRaised(ue);
+				NewUnitDialog.this.dispose();
 			}
 		});
 		
@@ -76,11 +78,12 @@ public class NewUnitDialog extends JDialog {
 		gc.weightx = 1;
 		gc.weighty = 1;
 		gc.fill = GridBagConstraints.NONE;
-		gc.anchor = GridBagConstraints.FIRST_LINE_START;
+		gc.anchor = GridBagConstraints.FIRST_LINE_END;
 		gc.insets = labelInset;
 		add(idLabel, gc);
 		
 		gc.gridx = 1;
+		gc.anchor = GridBagConstraints.FIRST_LINE_START;
 		gc.insets = controlInset;
 		add(idText, gc);
 		//// Next Row ////

@@ -1,4 +1,3 @@
-
 /**
  * 
  */
@@ -9,7 +8,7 @@ import java.io.Serializable;
 /**
  * Represents a unit with a specific ID, name, and the maximum allowed absences
  * @author Ioannis Boutsikas
- *
+ * @author Nikolaos Doumpalas
  */
 public class Unit implements Serializable{
 	
@@ -103,6 +102,7 @@ public class Unit implements Serializable{
 	 */
 	@Override
 	public String toString() {
-		return "Unit [id=" + id + ", name=" + name + "]";
+		//return "Unit [id=" + id + ", name=" + name + "]";
+		return id+" - "+name;
 	}
 }

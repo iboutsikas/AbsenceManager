@@ -1,4 +1,4 @@
-package us.absencemanager.ui.ad;
+package us.absencemanager.ui.an;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -20,6 +20,10 @@ import us.absencemanager.exceptions.AlreadyExistsException;
 
 
 
+/**
+ * @authors Athanasios Doulgeris , Nikolaos Doumpalas
+ *
+ */
 public class AddStudDialog extends JDialog {
 
 	/**
@@ -34,6 +38,10 @@ public class AddStudDialog extends JDialog {
 	private GridBagLayout gridBag;
 	private Controller cont;
 	
+	/**
+	 * @param fr
+	 * @param cont
+	 */
 	public AddStudDialog(JFrame fr, Controller cont){
 		super(fr);
 		
@@ -58,6 +66,9 @@ public class AddStudDialog extends JDialog {
 		
 	}
 	
+	/**
+	 * 
+	 */
 	private void addComponents(){
 		
 		cons = new GridBagConstraints();
@@ -116,6 +127,9 @@ public class AddStudDialog extends JDialog {
 		centerPanel.add(emailTxt);
 	}
 	
+	/**
+	 * 
+	 */
 	private void addCreateBtn(){
 		//BUTTON
 		createBtn = new JButton("Create");

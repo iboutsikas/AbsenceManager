@@ -1,4 +1,3 @@
-
 /**
  * 
  */
@@ -89,7 +88,18 @@ public class DataLayer {
 			throw new AlreadyExistsException("Student already exists!");
 		}		
 	}
-
+	
+	public void deleteStudent(String studentId) {
+		List<Student> s = students.stream().filter(p -> p.getId().equals(studentId))
+						 .collect(Collectors.toList());
+		if(s.size() != 1) {
+			throw new IllegalStateException("Could not find student with id " + studentId + " to delete.");
+		} else {
+			Student temp = s.get(0);
+			students.remove(temp);
+		}
+	}
+	
 	/**
 	 * Updates the existing student object with the data from the new
 	 * NOTE: It does NOT include absences
@@ -255,4 +265,3 @@ public class DataLayer {
 		return units;
 	}
 }
-

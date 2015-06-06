@@ -33,6 +33,7 @@ public class UnitComboModel extends AbstractListModel implements ComboBoxModel {
 	
 	public void setData(List list) {
 		this.list = list;
+		fireContentsChanged(this, 0, getSize());
 	}
 	
 	public String getSelectedId() {

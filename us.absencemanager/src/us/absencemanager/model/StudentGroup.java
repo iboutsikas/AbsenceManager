@@ -1,4 +1,3 @@
-
 /**
  * 
  */
@@ -8,12 +7,16 @@ import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import us.absencemanager.exceptions.AlreadyExistsException;
-/**
- * A proxy class to be serialized in place of a StudentGroup object.
- * @author Ioannis Boutsikas
- */
+import us.absencemanager.exceptions.NoDataFoundException;
+ /**
+  * A proxy class to be serialized in place of a StudentGroup object.
+  * @author Ioannis Boutsikas
+  * @author Nikolaos Doumpalas
+  */
 class StudentGroupProxy implements Serializable {
 	/**
 	 * 
@@ -29,8 +32,9 @@ class StudentGroupProxy implements Serializable {
 	 * Creates a proxy object from a StudentGroup object.
 	 * @param o The StudentGroup object to be converted.
 	 */
-	public StudentGroupProxy(StudentGroup o) {
+	public StudentGroupProxy(StudentGroup o, int maxID) {
 		dl = DataLayer.getInstance();
+		this.maxID = maxID;
 		this.name = o.getName();
 		this.id = o.getID();
 		this.studentIDs = new ArrayList<String>();
@@ -98,7 +102,7 @@ public class StudentGroup implements Serializable {
 	 */
 	private Object writeReplace() throws java.io.ObjectStreamException
     {
-        return new StudentGroupProxy(this);
+        return new StudentGroupProxy(this, maxID);
     }
 	
 	/**
@@ -127,6 +131,21 @@ public class StudentGroup implements Serializable {
 		}
 		return null;
 	}
+	/**
+	 * Removes the student specified from the group
+	 * @param studentId the id of the student to be removed
+	 * @throws NoDataFoundException
+	 */
+	public void removeStudent(String studentId) throws NoDataFoundException {
+		List<Student> s = students.stream().filter(p -> p.getId() == studentId)
+						 				   .collect(Collectors.toList());
+		if (s.size() != 1) {
+			throw new NoDataFoundException("No student was found");
+		} else {
+			students.remove(s.get(0));
+		}
+	}
+	
 	/**
 	 * 
 	 * @return The collection of Students
@@ -196,12 +215,12 @@ public class StudentGroup implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		String str = "StudentGroup [name=" + name + ", id=" + id + "]\n";
-				for(Student s: students) {
-					str+="\t"+s.getId()+"\n";
-				}
-		return str;	
+//		String str = "StudentGroup [name=" + name + ", id=" + id + "]\n";
+//				for(Student s: students) {
+//					str+="\t"+s.getId()+"\n";
+//				}
+//		return str;	
+		return this.name;
 	}
 	
 }
-
