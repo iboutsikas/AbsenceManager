@@ -14,11 +14,18 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import us.absencemanager.controller.Controller;
-import us.absencemanager.exceptions.AlreadyExistsException;
 import us.absencemanager.exceptions.NoDataFoundException;
 
+/**
+ * @authors Athanasios Doulgeris , Nikolaos Doumpalas
+ *
+ */
 public class GroupDialog extends JDialog{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7508180544843397858L;
 	private JPanel mainContainer, btnPanel;
 	private JButton proceedBtn, addStudBtn;
 	private Controller cont;
@@ -28,6 +35,11 @@ public class GroupDialog extends JDialog{
 	private int groupId;
 	private JFrame thisFrame;
 	
+	/**
+	 * @param fr
+	 * @param cont
+	 * @param groupName
+	 */
 	public GroupDialog(JFrame fr, Controller cont, String groupName){
 		super(fr);
 		
@@ -56,6 +68,9 @@ public class GroupDialog extends JDialog{
 		this.pack();	
 	}
 	
+	/**
+	 * 
+	 */
 	private void addComponents(){
 		groupId = -1;
 		for(int i = 0; i<cont.getStudentGroups().size(); i++){
@@ -69,6 +84,9 @@ public class GroupDialog extends JDialog{
 		
 	}
 	
+	/**
+	 * 
+	 */
 	private void createTable(){
 		this.groupTable = new JTable();		
 
@@ -89,6 +107,9 @@ public class GroupDialog extends JDialog{
 		this.mainContainer.add(new JScrollPane(groupTable), BorderLayout.CENTER);
 	}
 	
+	/**
+	 * 
+	 */
 	private void addListeners(){
 		
 		proceedBtn.addActionListener(new ActionListener(){
@@ -122,6 +143,7 @@ public class GroupDialog extends JDialog{
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				@SuppressWarnings("unused")
 				StudentToGroupDialog studDlg = new StudentToGroupDialog(thisFrame, cont,groupId);
 				
 			}

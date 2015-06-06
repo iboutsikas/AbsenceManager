@@ -2,48 +2,38 @@ package us.absencemanager.ui.an;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.MenuItem;
-import java.awt.MouseInfo;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.TreeMap;
 
-import javax.swing.JApplet;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 
 import us.absencemanager.controller.Controller;
 import us.absencemanager.exceptions.AlreadyExistsException;
 import us.absencemanager.exceptions.NoDataFoundException;
 import us.absencemanager.model.Student;
 
+
+/**
+ * @authors Athanasios Doulgeris , Nikolaos Doumpalas
+ *
+ */
 public class StudentToGroupDialog extends JDialog{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1751536192535326068L;
 	private JPanel mainContainer, centerPanel,btnPanel;
 	private JTable studentsTable;
 	private GroupTableModel model;
 	private Controller cont;
-	private ArrayList<Boolean> booleanList;
-	private StudentToGroupDialog thisFrame;
-	private TreeMap<String,Integer> map;
 	private JButton proceedBtn;
 	private int groupId;
 	

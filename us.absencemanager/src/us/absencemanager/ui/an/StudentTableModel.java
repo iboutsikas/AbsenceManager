@@ -2,16 +2,21 @@ package us.absencemanager.ui.an;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.TreeMap;
 
-import us.absencemanager.model.*;
-
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 
+import us.absencemanager.model.Student;
+
+/**
+ * @authors Athanasios Doulgeris , Nikolaos Doumpalas
+ *
+ */
 public class StudentTableModel extends AbstractTableModel{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7672673314424907339L;
 	private List<Student> list;
 	private TreeMap<String, Integer> map;
 	private String[] columnNames = new String[]{"ID", "First Name", "Last Name","Absences", "Select"};
@@ -58,7 +63,6 @@ public class StudentTableModel extends AbstractTableModel{
 	@Override
 	public Object getValueAt(int row, int col) {
 		Student s = list.get(row);
-		Boolean b = boolList.get(row);
 		switch(col) {
 			case 0: 
 				return s.getId();

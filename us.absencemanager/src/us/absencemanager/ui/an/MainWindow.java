@@ -9,18 +9,12 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Map;
-import java.util.TreeMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -38,14 +32,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
 import javax.swing.text.DateFormatter;
 
 import us.absencemanager.controller.Controller;
-import us.absencemanager.exceptions.NoDataFoundException;
-import us.absencemanager.model.Absence;
 
+/**
+ * @authors Athanasios Doulgeris , Nikolaos Doumpalas
+ *
+ */
 public class MainWindow extends JFrame{
 
 	/**
@@ -56,6 +50,7 @@ public class MainWindow extends JFrame{
 	private AddUnitDialog addUnitDlg;
 	private AddGroupDialog addGroupDlg;
 	private JLabel footerLb, groupLabel, unitLabel, classLabel, dateLb, timeLb;
+	@SuppressWarnings("rawtypes")
 	private JComboBox dropDownGroup, dropDownUnit;
 	private JTextField classTxt;
 	private Calendar calendar;
@@ -68,9 +63,13 @@ public class MainWindow extends JFrame{
 	private JPanel mainContainer, btnContainer, footerContainer, centerContainer, centerPanel;
 	private GridBagConstraints cons;
 	private GridBagLayout gridBag;
+	@SuppressWarnings("rawtypes")
 	private DefaultComboBoxModel modelU, modelG;
 	
 	
+	/**
+	 * 
+	 */
 	public MainWindow(){
 		super();
 		
@@ -99,6 +98,9 @@ public class MainWindow extends JFrame{
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
+	/**
+	 * 
+	 */
 	private void addComponents(){
 		
 		this.centerContainer = new JPanel();
@@ -129,6 +131,9 @@ public class MainWindow extends JFrame{
 		createCenterContainer();
 	}
 	
+	/**
+	 * 
+	 */
 	private void createCenterContainer(){
 		this.centerContainer = new JPanel();
 		
@@ -206,6 +211,9 @@ public class MainWindow extends JFrame{
 		this.mainContainer.add(centerContainer, BorderLayout.CENTER);
 	}
 	
+	/**
+	 * 
+	 */
 	private void addMenu(){
 		//Create the objects
 		this.menuBar = new JMenuBar();
@@ -259,6 +267,9 @@ public class MainWindow extends JFrame{
 		this.mainContainer.add(menuBar, BorderLayout.NORTH);
 	}
 	
+	/**
+	 * 
+	 */
 	private void createCalendar(){
 		calendar = Calendar.getInstance();
 		
@@ -271,8 +282,7 @@ public class MainWindow extends JFrame{
 		modelD.setValue(calendar.getTime());
 		
         timePicker = new JSpinner(model);
-        
-        Calendar cal = Calendar.getInstance();
+
         
 		JSpinner.DateEditor editor = new JSpinner.DateEditor(timePicker,"HH:mm");
 	    DateFormatter formatter = (DateFormatter)editor.getTextField().getFormatter();
@@ -308,6 +318,9 @@ public class MainWindow extends JFrame{
 		
 	}
 	
+	/**
+	 * @param thisFrame
+	 */
 	private void addListeners(JFrame thisFrame){
 		
 		helpGetHelp.addActionListener(new ActionListener(){
@@ -370,10 +383,12 @@ public class MainWindow extends JFrame{
 		
 		groupOfStudentsEdit.addActionListener(new ActionListener(){
 
+			@SuppressWarnings("unchecked")
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				JDialog groupPicker = new JDialog(thisFrame);
 				
+				@SuppressWarnings("rawtypes")
 				JComboBox dropDown = new JComboBox();
 				for(int i = 0; i < dropDownGroup.getItemCount(); i++){
 					if(i>0){
@@ -519,6 +534,10 @@ public class MainWindow extends JFrame{
 		
 	}
 	
+	/**
+	 * 
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void loadDropDownLists(){
 		
 		modelG = new DefaultComboBoxModel();
@@ -545,10 +564,16 @@ public class MainWindow extends JFrame{
 		
 	}
 	
+	/**
+	 * @return
+	 */
 	private String getSelectedGroup(){
 		return dropDownGroup.getSelectedItem().toString();
 	}
 	
+	/**
+	 * @return
+	 */
 	private String getSelectedUnit(){
 		return dropDownUnit.getSelectedItem().toString();
 	}

@@ -7,7 +7,15 @@ import javax.swing.table.AbstractTableModel;
 
 import us.absencemanager.model.Student;
 
+/**
+ * @authors Athanasios Doulgeris , Nikolaos Doumpalas
+ *
+ */
 public class GroupTableModel extends AbstractTableModel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1118508717410462106L;
 	private List<Student> list;
 	private String[] columnNames = new String[]{"ID", "First Name", "Last Name", " Select"};
 	private List<Boolean> boolList;

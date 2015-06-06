@@ -1,49 +1,38 @@
 package us.absencemanager.ui.an;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.MenuItem;
-import java.awt.MouseInfo;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.ArrayList;
-import java.util.Map;
 import java.util.TreeMap;
 
-import javax.swing.JApplet;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 
 import us.absencemanager.controller.Controller;
 import us.absencemanager.exceptions.NoDataFoundException;
 
+/**
+ * @authors Athanasios Doulgeris , Nikolaos Doumpalas
+ *
+ */
 public class EditStudDialog extends JDialog{
 
-	private JPanel mainContainer, centerPanel,btnPanel;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4829686926989019442L;
+	private JPanel mainContainer, centerPanel;
 	private JTable studentsTable;
 	private StudentTableModel model;
 	private Controller cont;
-	private ArrayList<Boolean> booleanList;
-	private EditStudDialog thisFrame;
 	private TreeMap<String,Integer> map;
 
 	
+	/**
+	 * @param fr
+	 * @param cont
+	 */
 	public EditStudDialog(JFrame fr, Controller cont){
 		super(fr);
 
@@ -64,6 +53,9 @@ public class EditStudDialog extends JDialog{
 		
 	}
 	
+	/**
+	 * 
+	 */
 	private void addComponents(){
 		
 		
@@ -86,6 +78,9 @@ public class EditStudDialog extends JDialog{
 		this.centerPanel.add(new JScrollPane(studentsTable), BorderLayout.CENTER);
 	}
 	
+	/**
+	 * @return
+	 */
 	public TreeMap<String, Integer> getStudentAbsences(){
 		this.map =new  TreeMap<String , Integer> ();
 		for(int i = 0; i<cont.getStudents().size(); i++){

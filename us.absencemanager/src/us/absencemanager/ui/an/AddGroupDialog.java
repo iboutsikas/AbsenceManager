@@ -16,15 +16,21 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.border.Border;
-import javax.swing.event.ListSelectionEvent;
 
 import us.absencemanager.controller.Controller;
 import us.absencemanager.exceptions.AlreadyExistsException;
 import us.absencemanager.exceptions.NoDataFoundException;
 
+/**
+ * @authors Athanasios Doulgeris , Nikolaos Doumpalas
+ *
+ */
 public class AddGroupDialog extends JDialog{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5641772545368260891L;
 	private JPanel mainContainer, btnPanel, centerPanel, gridPanel;
 	private JButton createButton;
 	private JLabel titleLb;
@@ -35,6 +41,10 @@ public class AddGroupDialog extends JDialog{
 	private Controller cont;
 	private AbsenceTableModel model;
 
+	/**
+	 * @param fr
+	 * @param cont
+	 */
 	public AddGroupDialog(JFrame fr, Controller cont){
 		super(fr);
 
@@ -54,6 +64,9 @@ public class AddGroupDialog extends JDialog{
 
 	}
 
+	/**
+	 * 
+	 */
 	private void addComponents(){
 		//BUTTON CONTAINER
 		this.btnPanel = new JPanel();
@@ -91,6 +104,9 @@ public class AddGroupDialog extends JDialog{
 		this.mainContainer.add(btnPanel, BorderLayout.SOUTH);
 	}
 
+	/**
+	 * 
+	 */
 	private void createTable(){
 		this.studentsTable = new JTable();		
 
@@ -106,6 +122,9 @@ public class AddGroupDialog extends JDialog{
 		this.centerPanel.add(new JScrollPane(studentsTable), BorderLayout.CENTER);
 	}
 
+	/**
+	 * 
+	 */
 	private void addListeners(){
 		createButton.addActionListener(new ActionListener(){
 			

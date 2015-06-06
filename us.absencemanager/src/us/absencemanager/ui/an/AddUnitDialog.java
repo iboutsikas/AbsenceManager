@@ -6,9 +6,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -21,8 +18,16 @@ import javax.swing.JTextField;
 import us.absencemanager.controller.Controller;
 import us.absencemanager.exceptions.AlreadyExistsException;
 
+/**
+ * @authors Athanasios Doulgeris , Nikolaos Doumpalas
+ *
+ */
 public class AddUnitDialog extends JDialog{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8783256229633658776L;
 	private JPanel mainContainer, btnPanel, centerPanel;
 	private JButton createBtn;
 	private JLabel idLb, titleLb, maxAbsLb;
@@ -30,11 +35,13 @@ public class AddUnitDialog extends JDialog{
 	private GridBagConstraints cons;
 	private GridBagLayout gridBag;
 	private Controller cont;
-	private JFrame parent;
 	
+	/**
+	 * @param fr
+	 * @param cont
+	 */
 	public AddUnitDialog(JFrame fr, Controller cont){
 		super(fr);
-		this.parent = fr;
 		this.cont = cont;
 		mainContainer = (JPanel) this.getContentPane();
 		mainContainer.setLayout(new BorderLayout());
@@ -47,6 +54,9 @@ public class AddUnitDialog extends JDialog{
 		
 	}
 	
+	/**
+	 * 
+	 */
 	private void addComponents(){
 		//BUTTON CONTAINER
 		this.btnPanel = new JPanel();
@@ -63,6 +73,9 @@ public class AddUnitDialog extends JDialog{
 		this.addListeners();
 	}
 
+	/**
+	 * 
+	 */
 	private void addCenterComponents() {
 		
 		cons = new GridBagConstraints();
@@ -109,6 +122,9 @@ public class AddUnitDialog extends JDialog{
 		centerPanel.add(maxAbsTxt);	
 	}
 	
+	/**
+	 * 
+	 */
 	private void addListeners(){
 		createBtn.addActionListener(new ActionListener(){
 			int maxAbsences = -1;

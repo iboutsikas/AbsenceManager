@@ -1,11 +1,8 @@
 package us.absencemanager.ui.an;
 
-import us.absencemanager.model.*;
-
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,24 +16,42 @@ import javax.swing.JTable;
 
 import us.absencemanager.controller.Controller;
 import us.absencemanager.exceptions.NoDataFoundException;
+import us.absencemanager.model.Student;
+
+/**
+ * @authors Athanasios Doulgeris , Nikolaos Doumpalas
+ *
+ */
 
 public class AbsenceDialog extends JDialog {
 
+	
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1059403725400246930L;
 	private JPanel mainContainer, tableContainer, buttonContainer;
 	private JButton finishBtn;
 	private JTable absenceTable;
 	private Controller cont;
 	private AbsenceTableModel tableModel;
 	private ArrayList<Boolean> booleanList;
-	private int groupId;
 	private String unitId, date, classroom;
 	private AbsenceDialog thisFrame;
 	
+	/**
+	 * @param fr
+	 * @param cont
+	 * @param groupId
+	 * @param unitId
+	 * @param date
+	 * @param classroom
+	 */
 	public AbsenceDialog(JFrame fr, Controller cont,int groupId, String unitId, String date, String classroom){
 		super(fr);
 		thisFrame = this;
 		this.cont = cont;
-		this.groupId = groupId;
 		this.unitId = unitId;
 		this.date = date;
 		this.classroom = classroom;
@@ -54,6 +69,9 @@ public class AbsenceDialog extends JDialog {
 		this.setVisible(true);
 	}
 	
+	/**
+	 * @param groupId
+	 */
 	private void createTable(int groupId){
 		tableModel = new AbsenceTableModel();
 		absenceTable = new JTable(tableModel);
@@ -71,10 +89,16 @@ public class AbsenceDialog extends JDialog {
 		
 	}
 	
+	/**
+	 * @param students
+	 */
 	public void setData(List<Student> students){
 		tableModel.setData(students);
 	}
 	
+	/**
+	 * 
+	 */
 	private void createBtn(){
 		finishBtn = new JButton("Finish");
 		
@@ -83,6 +107,9 @@ public class AbsenceDialog extends JDialog {
 		this.mainContainer.add(buttonContainer, BorderLayout.SOUTH);
 	}
 	
+	/**
+	 * 
+	 */
 	private void addListeners(){
 		finishBtn.addActionListener(new ActionListener(){
 
