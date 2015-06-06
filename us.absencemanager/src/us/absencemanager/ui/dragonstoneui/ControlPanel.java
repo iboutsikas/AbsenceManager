@@ -1,6 +1,7 @@
 package us.absencemanager.ui.dragonstoneui;
 
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -16,12 +17,16 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.text.DateFormatter;
+
+import us.absencemanager.exceptions.InvalidOperationsException;
 
 @SuppressWarnings({"serial","rawtypes"})
 public class ControlPanel extends JPanel {
@@ -39,6 +44,8 @@ public class ControlPanel extends JPanel {
 	private ControlListener listener;
 	private GroupComboModel groupModel;
 	private UnitComboModel unitModel;
+	private JButton deleteGroupButton;
+	private JButton deleteUnitButton;
 	
 	
 	public ControlPanel(List groupList, List unitList) {
@@ -47,7 +54,12 @@ public class ControlPanel extends JPanel {
 		loadButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int gId = groupModel.getSelectedId();
+				int gId = 0;
+				try {
+					gId = groupModel.getSelectedId();
+				} catch (InvalidOperationsException e1) {
+					JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(ControlPanel.this), e1.getMessage(), "Error",JOptionPane.WARNING_MESSAGE);
+				}
 				ControlEvent ce = new ControlEvent(this, gId);
 				listener.loadEvent(ce);
 			}
@@ -55,7 +67,12 @@ public class ControlPanel extends JPanel {
 		unitSelectionBox.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent arg0) {
-				int gId = groupModel.getSelectedId();
+				int gId = 0;
+				try {
+					gId = groupModel.getSelectedId();
+				} catch (InvalidOperationsException e1) {
+					JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(ControlPanel.this), e1.getMessage(), "Error",JOptionPane.WARNING_MESSAGE);
+				}
 				ControlEvent ce = new ControlEvent(this, gId);
 				listener.loadEvent(ce);
 			}
@@ -63,9 +80,38 @@ public class ControlPanel extends JPanel {
 		groupSelectionBox.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent arg0) {
-				int gId = groupModel.getSelectedId();
+				int gId = 0;
+				try {
+					gId = groupModel.getSelectedId();
+				} catch (InvalidOperationsException e1) {
+					JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(ControlPanel.this), e1.getMessage(), "Error",JOptionPane.WARNING_MESSAGE);
+				}
 				ControlEvent ce = new ControlEvent(this, gId);
 				listener.loadEvent(ce);
+			}
+		});
+		deleteGroupButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int gId = 0;
+				try {
+					gId = groupModel.getSelectedId();
+				} catch (InvalidOperationsException e1) {
+					JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(ControlPanel.this), e1.getMessage(), "Error",JOptionPane.WARNING_MESSAGE);
+				}
+				listener.deleteGroupEvent(gId);
+			}
+		});
+		deleteUnitButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String uId = "";
+				try {
+					uId = unitModel.getSelectedId();
+				} catch (InvalidOperationsException e1) {
+					JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(ControlPanel.this), e1.getMessage(), "Error",JOptionPane.WARNING_MESSAGE);
+				}
+				listener.deleteUnitEvent(uId);
 			}
 		});
 	}
@@ -138,10 +184,17 @@ public class ControlPanel extends JPanel {
 		add(timeSpinner, gc);
 		//// Next Row ////
 		gc.gridy++;
-		gc.gridx = 1;
+		gc.gridx = 0;
 		gc.weighty = 0.08;
 		gc.anchor = GridBagConstraints.LINE_START;
 		add(loadButton, gc);
+		
+		
+		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		buttonPanel.add(deleteGroupButton);
+		buttonPanel.add(deleteUnitButton);
+		gc.gridx = 1;
+		add(buttonPanel, gc);
 	}
 	
 	@SuppressWarnings({ "unchecked" })
@@ -171,6 +224,14 @@ public class ControlPanel extends JPanel {
 		timeSpinner = new JSpinner();
 		timeLabel = new JLabel("Select time:");
 		loadButton = new JButton("Load Students");
+		deleteGroupButton = new JButton("Delete Group");
+		deleteUnitButton = new JButton("Delete Unit");
+		Dimension d = loadButton.getPreferredSize();
+		deleteGroupButton.setPreferredSize(d);
+		deleteUnitButton.setPreferredSize(d);
+		
+		
+		
 		
 		//Setup time spinner
 		Calendar calendar = Calendar.getInstance();
@@ -200,10 +261,6 @@ public class ControlPanel extends JPanel {
 	
 	public void refreshGroups(List groupList) {
 		groupModel.setData(groupList);
-//		groupSelectionBox.revalidate();
-//		groupSelectionBox.repaint();
-//		this.revalidate();
-//		this.repaint();
 	}
 	
 	public ControlPanelInfo getPanelInfo() {
@@ -211,7 +268,15 @@ public class ControlPanel extends JPanel {
 		String time = new SimpleDateFormat("HH : mm").format(timeSpinner.getValue());
 		String dateTime = date + " - " + time;
 		String classroom = classroomText.getText();
-		return new ControlPanelInfo(groupModel.getSelectedId(), unitModel.getSelectedId(), dateTime , classroom);
+		String uId = "";
+		int gId = 0;
+		try {
+			gId = groupModel.getSelectedId();
+			uId = unitModel.getSelectedId();
+		} catch (InvalidOperationsException e1) {
+			JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(ControlPanel.this), e1.getMessage(), "Error",JOptionPane.WARNING_MESSAGE);
+		}
+		return new ControlPanelInfo(gId, uId, dateTime , classroom);
 	}
 
 	public void refreshUnits(List unitList) {

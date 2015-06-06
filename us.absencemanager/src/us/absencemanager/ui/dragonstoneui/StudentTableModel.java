@@ -10,7 +10,7 @@ import us.absencemanager.model.Student;
 public class StudentTableModel extends AbstractTableModel {
 	private List<Student> list;
 	private List<Boolean> bools;
-	private String[] columnNames = new String[]{"ID", "First Name", "Last Name", " Is Present"};
+	private String[] columnNames = new String[]{"ID", "First Name", "Last Name", " Is Absent"};
 	private AdditionListener listener;
 	/* (non-Javadoc)
 	 * @see javax.swing.table.AbstractTableModel#getColumnClass(int)

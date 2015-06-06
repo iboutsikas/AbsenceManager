@@ -4,7 +4,10 @@ import java.util.List;
 
 import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
+import us.absencemanager.exceptions.InvalidOperationsException;
 import us.absencemanager.model.Unit;
 
 public class UnitComboModel extends AbstractListModel implements ComboBoxModel {
@@ -36,7 +39,10 @@ public class UnitComboModel extends AbstractListModel implements ComboBoxModel {
 		fireContentsChanged(this, 0, getSize());
 	}
 	
-	public String getSelectedId() {
+	public String getSelectedId() throws InvalidOperationsException {
+		if (selection == null) {
+			throw new InvalidOperationsException("You need to have at least one unit first");
+		}
 		return selection.getId();
 	}
 }

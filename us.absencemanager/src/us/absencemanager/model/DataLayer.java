@@ -230,7 +230,7 @@ public class DataLayer {
 		} else if (temp.size() > 1) {
 			throw new IllegalStateException("There is a double in a linked set. How did you manage that ?");
 		} else {
-			units.remove(temp.get(0));
+			studentGroups.remove(temp.get(0));
 		}
 	}
 

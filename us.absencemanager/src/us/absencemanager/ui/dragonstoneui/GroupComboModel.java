@@ -6,6 +6,7 @@ import java.util.List;
 import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
 
+import us.absencemanager.exceptions.InvalidOperationsException;
 import us.absencemanager.model.StudentGroup;
 
 public class GroupComboModel extends AbstractListModel implements ComboBoxModel {
@@ -35,7 +36,10 @@ public class GroupComboModel extends AbstractListModel implements ComboBoxModel 
 		fireContentsChanged(this, 0, getSize());
 	}
 	
-	public int getSelectedId() {
+	public int getSelectedId() throws InvalidOperationsException {
+		if (selection == null) {
+			throw new InvalidOperationsException("You need to have at least one group first");
+		}
 		return selection.getID();
 	}
 }

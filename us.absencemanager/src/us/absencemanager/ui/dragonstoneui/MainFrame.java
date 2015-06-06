@@ -68,6 +68,7 @@ public class MainFrame extends JFrame implements AdditionListener, PopupListener
 		 * Load students from the selected group to the JTable
 		 */
 		controlPanel.setControlListener(new ControlListener() {
+			@Override
 			public void loadEvent(ControlEvent ce) {
 				try {
 					tablePanel.initModel();
@@ -75,6 +76,24 @@ public class MainFrame extends JFrame implements AdditionListener, PopupListener
 					tablePanel.setData(c.getStudentsInGroup(ce.getGroupId()));
 					currentGroupId = ce.getGroupId();
 					eStPanel.populateList(c.getStudents(), c.getStudentsInGroup(currentGroupId));
+				} catch (NoDataFoundException e) {
+					JOptionPane.showMessageDialog(MainFrame.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			@Override
+			public void deleteUnitEvent(String unitId) {
+				try {
+					c.deleteUnit(unitId);
+					controlPanel.refreshUnits(c.getUnits());
+				} catch (NoDataFoundException e) {
+					JOptionPane.showMessageDialog(MainFrame.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			@Override
+			public void deleteGroupEvent(int groupId) {
+				try {
+					c.deleteStudentGroup(groupId);
+					controlPanel.refreshGroups(c.getStudentGroups());
 				} catch (NoDataFoundException e) {
 					JOptionPane.showMessageDialog(MainFrame.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 				}
