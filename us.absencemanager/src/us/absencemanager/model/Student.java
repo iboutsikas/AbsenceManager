@@ -72,9 +72,10 @@ public class Student implements Serializable{
 	public void removeAbsence(Absence a) {
 		String unitId = a.getUnitId();
 		ArrayList<Absence> temp = absences.get(unitId);
-		if (temp.contains(a))
+		if (temp != null) {
 			temp.remove(a);
-		absences.put(unitId, temp);
+			absences.put(unitId, temp);
+		}
 	}
 	
 	/**

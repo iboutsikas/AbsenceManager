@@ -6,6 +6,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -45,6 +47,22 @@ public class ControlPanel extends JPanel {
 		loadButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				int gId = groupModel.getSelectedId();
+				ControlEvent ce = new ControlEvent(this, gId);
+				listener.loadEvent(ce);
+			}
+		});
+		unitSelectionBox.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent arg0) {
+				int gId = groupModel.getSelectedId();
+				ControlEvent ce = new ControlEvent(this, gId);
+				listener.loadEvent(ce);
+			}
+		});
+		groupSelectionBox.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent arg0) {
 				int gId = groupModel.getSelectedId();
 				ControlEvent ce = new ControlEvent(this, gId);
 				listener.loadEvent(ce);
