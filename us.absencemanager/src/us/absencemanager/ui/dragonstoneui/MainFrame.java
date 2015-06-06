@@ -25,17 +25,36 @@ public class MainFrame extends JFrame implements AdditionListener, PopupListener
 	private DisplayAbsencesDialog absenceDialog;
 	
 	public MainFrame() {
-		try {
-			c.loadAll();
+		try { 
+			c.loadStudents();
 		} catch (ClassNotFoundException e1) {
-			e1.printStackTrace();
+
+		} catch (IOException e1) { 
+	
+		}
+		
+		try {
+			c.loadGroups();
+		} catch (ClassNotFoundException e1) {
+
 		} catch (IOException e1) {
 			String groupName = JOptionPane.showInputDialog(MainFrame.this, "We detected that you have no files saved.\n Please provide a name for your first group!", "Fresh install", JOptionPane.INFORMATION_MESSAGE);
 			try {
 				c.addStudentGroup(groupName);
+				c.saveGroups("");
 			} catch (AlreadyExistsException e) {
-				e.printStackTrace();
+				JOptionPane.showMessageDialog(MainFrame.this, "The student already exists (ID should be unique)!", "Error", JOptionPane.ERROR_MESSAGE);
+			} catch (IOException e) {
+				
 			}
+		}
+		
+		try {
+			c.loadUnits();
+		} catch (ClassNotFoundException e1) {
+
+		} catch (IOException e1) { 
+	
 		}
 		
 		menuBar = new MenuBar();

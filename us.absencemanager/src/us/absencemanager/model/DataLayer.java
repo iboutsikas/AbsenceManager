@@ -33,6 +33,13 @@ public class DataLayer {
 	public static DataLayer getInstance() {
 		return instance;
 	}
+	
+	/**
+	 * Returns the student with the specified ID
+	 * @param id the id of the student
+	 * @return the student matching the ID
+	 * @throws NoDataFoundException
+	 */
 	public Student findStudentById(String id) throws NoDataFoundException {
 		List<Student> s = students.stream()
 								  .filter(p -> p.getId() == id)
@@ -89,14 +96,26 @@ public class DataLayer {
 		}		
 	}
 	
+	/**
+	 * Deletes the student specified from the collection, then from every group that contains them.
+	 * @param studentId the id of the student to delete
+	 */
+	
 	public void deleteStudent(String studentId) {
 		List<Student> s = students.stream().filter(p -> p.getId().equals(studentId))
 						 .collect(Collectors.toList());
+		Student temp;
 		if(s.size() != 1) {
 			throw new IllegalStateException("Could not find student with id " + studentId + " to delete.");
 		} else {
-			Student temp = s.get(0);
+			temp = s.get(0);
 			students.remove(temp);
+		}
+		
+		for (StudentGroup sg: studentGroups) {
+			if(sg.getStudents().contains(temp)) {
+				sg.getStudents().remove(temp);	
+			}
 		}
 	}
 	
@@ -197,8 +216,22 @@ public class DataLayer {
 		}
 	}
 
-	public void updateStudentGroup(StudentGroup sg) {
-		
+	/**
+	 * Deletes the specified unit from the collection
+	 * @param unitId
+	 * @throws NoDataFoundException
+	 */
+	public void deleteGroup(int groupId) throws NoDataFoundException {
+		List<StudentGroup> temp = studentGroups.stream()
+											   .filter(g -> g.getID() == groupId)
+											   .collect(Collectors.toList());
+		if(temp.size() == 0) {
+			throw new NoDataFoundException("Could not find group with an id of :" + groupId);
+		} else if (temp.size() > 1) {
+			throw new IllegalStateException("There is a double in a linked set. How did you manage that ?");
+		} else {
+			units.remove(temp.get(0));
+		}
 	}
 
 	/**
@@ -253,8 +286,22 @@ public class DataLayer {
 		}
 	}
 	
-	public void updateUnit(Unit u) {
-		
+	/**
+	 * Deletes the specified unit from the collection
+	 * @param unitId
+	 * @throws NoDataFoundException
+	 */
+	public void deleteUnit(String unitId) throws NoDataFoundException {
+		List<Unit> temp = units.stream()
+				  			   .filter(u -> u.getId().equals(unitId))
+				  			   .collect(Collectors.toList());
+		if(temp.size() == 0) {
+			throw new NoDataFoundException("Could not find unit with an id of :" + unitId);
+		} else if (temp.size() > 1) {
+			throw new IllegalStateException("There is a double in a linked set. How did you manage that ?");
+		} else {
+			units.remove(temp.get(0));
+		}
 	}
 	
 	/**

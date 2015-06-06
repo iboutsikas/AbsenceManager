@@ -44,37 +44,6 @@ public class Controller {
 		return Collections.unmodifiableList(temp);
 	}
 	
-	public void updateStudent(String id, String firstName, String lastName, String email) throws NoDataFoundException {
-		dl.updateStudent(new Student(id,firstName, lastName, email));
-	}
-	
-	/**
-	 * Deletes a student from the student collection
-	 * @param studentId the id of the student to delete
-	 */
-	public void deleteStudent(String studentId) {
-		dl.deleteStudent(studentId);
-	}
-	
-	/**
-	 * Returns an unmodifiable list of StudentGroups
-	 * @return a List&lt;StudentGroup&gt; object
-	 */
-	public List<StudentGroup> getStudentGroups() {
-		ArrayList<StudentGroup> temp = new ArrayList<StudentGroup>(dl.getStudentGroups());		
-		return Collections.unmodifiableList(temp);
-	}
-	
-	/**
-	 * Returns an unmodifiable list of StudentGroups
-	 * @return a List&lt;Unit&gt; object
-	 */
-	public List<Unit> getUnits() {
-		ArrayList<Unit> temp = new ArrayList<Unit>(dl.getUnits());	
-		return Collections.unmodifiableList(temp);
-	}
-	
-	
 	/**
 	 * Adds a student to the collection
 	 * 
@@ -88,7 +57,13 @@ public class Controller {
 		Student s = new Student(id,firstName,lastName,email);
 		dl.addStudent(s);
 	}
-	
+	/**
+	 * Deletes a student from the student collection
+	 * @param studentId the id of the student to delete
+	 */
+	public void deleteStudent(String studentId) {
+		dl.deleteStudent(studentId);
+	}
 	/**
 	 * Returns a map of String and ArrayList of Absence, key - value pairs
 	 * @param studentID the ID of the student that has the absences
@@ -99,52 +74,6 @@ public class Controller {
 		Student s = dl.findStudentById(studentID);
 		return Collections.unmodifiableMap(s.getAbsences());
 	}
-	
-	/**
-	 * Adds a StudentGroup with the specified name to the collection
-	 * @param name the name of the StudentGroup
-	 * @throws AlreadyExistsException
-	 */
-	public void addStudentGroup(String name) throws AlreadyExistsException {
-		StudentGroup sg = new StudentGroup(name);
-		dl.addStudentGroup(sg);
-	}
-	
-	/**
-	 * Adds a unit with the specified id, name and maximum absences to the collection
-	 * @param id the id of the unit
-	 * @param name the name of the unit
-	 * @param maxAbsences the maximum absences allowed for the unit
-	 * @throws AlreadyExistsException
-	 */
-	public void addUnit(String id, String name, int maxAbsences) throws AlreadyExistsException {
-		dl.addUnit(new Unit(id, name, maxAbsences));
-	}
-	
-	/**
-	 * Adds the specified student to the specified group
-	 * @param studentId the id of the student to be added
-	 * @param groupId the id of the group to add the student to
-	 * @throws NoDataFoundException
-	 * @throws AlreadyExistsException
-	 */
-	public void addStudentToGroup(String studentId, int groupId) throws NoDataFoundException, AlreadyExistsException {
-			Student s = dl.findStudentById(studentId);
-			StudentGroup sg = dl.findGroupById(groupId);			
-			sg.addStudent(s);
-	}
-	
-	/**
-	 * Removes the student specified from the given group
-	 * @param studentId the id of the student to be removed
-	 * @param groupId the id of the group to remove the student from
-	 * @throws NoDataFoundException
-	 */
-	public void removeStudentFromGroup(String studentId, int groupId) throws NoDataFoundException {
-		StudentGroup sg = dl.findGroupById(groupId);
-		sg.removeStudent(studentId);
-	}
-	
 	/**
 	 * Adds an absence to the specified student with the given unit id, classroom and date
 	 * @param studentId
@@ -156,7 +85,6 @@ public class Controller {
 	public void addAbsenceToStudent(String studentId, String unitId, String classroom, String date) throws NoDataFoundException {
 		dl.addAbsenceToStudent(studentId, new Absence(unitId, classroom, date));
 	}
-	
 	/**
 	 * Removes an absence from the specified student. In order to remove the correct absence the unit id, classroom and date of the absence
 	 * is required
@@ -170,6 +98,32 @@ public class Controller {
 		Student s =dl.findStudentById(studentId);
 		s.removeAbsence(new Absence(unitId, classroom, date));
 	}
+	/**
+	 * Returns an unmodifiable list of StudentGroups
+	 * @return a List&lt;StudentGroup&gt; object
+	 */
+	public List<StudentGroup> getStudentGroups() {
+		ArrayList<StudentGroup> temp = new ArrayList<StudentGroup>(dl.getStudentGroups());		
+		return Collections.unmodifiableList(temp);
+	}
+	/**
+	 * Adds a StudentGroup with the specified name to the collection
+	 * @param name the name of the StudentGroup
+	 * @throws AlreadyExistsException
+	 */
+	public void addStudentGroup(String name) throws AlreadyExistsException {
+		StudentGroup sg = new StudentGroup(name);
+		dl.addStudentGroup(sg);
+	}
+	
+	/**
+	 * Deletes a group from the StudentGroup collection
+	 * @param groupId the id of the group to delete
+	 * @throws NoDataFoundException 
+	 */
+	public void deleteStudentGroup(int groupId) throws NoDataFoundException {
+		dl.deleteGroup(groupId);
+	}
 	
 	/**
 	 * Returns an unmodifiable list of the students in the specified group
@@ -181,6 +135,57 @@ public class Controller {
 		StudentGroup sg = dl.findGroupById(groupId);
 		ArrayList<Student> temp = sg.getStudents();	
 		return Collections.unmodifiableList(temp);
+	}
+	/**
+	 * Adds the specified student to the specified group
+	 * @param studentId the id of the student to be added
+	 * @param groupId the id of the group to add the student to
+	 * @throws NoDataFoundException
+	 * @throws AlreadyExistsException
+	 */
+	public void addStudentToGroup(String studentId, int groupId) throws NoDataFoundException, AlreadyExistsException {
+			Student s = dl.findStudentById(studentId);
+			StudentGroup sg = dl.findGroupById(groupId);			
+			sg.addStudent(s);
+	}
+	/**
+	 * Removes the student specified from the given group
+	 * @param studentId the id of the student to be removed
+	 * @param groupId the id of the group to remove the student from
+	 * @throws NoDataFoundException
+	 */
+	public void removeStudentFromGroup(String studentId, int groupId) throws NoDataFoundException {
+		StudentGroup sg = dl.findGroupById(groupId);
+		sg.removeStudent(studentId);
+	}
+	/**
+	 * Returns an unmodifiable list of StudentGroups
+	 * @return a List&lt;Unit&gt; object
+	 */
+	public List<Unit> getUnits() {
+		ArrayList<Unit> temp = new ArrayList<Unit>(dl.getUnits());	
+		return Collections.unmodifiableList(temp);
+	}
+	
+	
+	/**
+	 * Adds a unit with the specified id, name and maximum absences to the collection
+	 * @param id the id of the unit
+	 * @param name the name of the unit
+	 * @param maxAbsences the maximum absences allowed for the unit
+	 * @throws AlreadyExistsException
+	 */
+	public void addUnit(String id, String name, int maxAbsences) throws AlreadyExistsException {
+		dl.addUnit(new Unit(id, name, maxAbsences));
+	}
+	
+	/**
+	 * Deletes a unit from the student collection
+	 * @param studentId the id of the student to delete
+	 * @throws NoDataFoundException 
+	 */
+	public void deleteUnit(String unitId) throws NoDataFoundException {
+		dl.deleteUnit(unitId);
 	}
 	
 	/**
